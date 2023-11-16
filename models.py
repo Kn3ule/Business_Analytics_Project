@@ -2,9 +2,8 @@ from datetime import datetime
 
 import os
 from sqlalchemy import Column, ForeignKey, Integer, create_engine, Table
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql.sqltypes import Integer, String,BigInteger,DateTime
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.sql.sqltypes import Integer, String,BigInteger,DateTime, Float
+from sqlalchemy.orm import sessionmaker, relationship, declarative_base
 
 engine = create_engine(os.getenv("POSTGRES_URL"))
 base = declarative_base()
@@ -14,7 +13,9 @@ my_session = Session(bind=engine)
 
 spotted = Table('spotted', base.metadata,
     Column('animal_id', ForeignKey('animals.id'), primary_key=True),
-    Column('location_id', ForeignKey('locations.locations_number'), primary_key=True)
+    Column('location_id', ForeignKey('locations.location_number'), primary_key=True),
+    Column('spotted_date', DateTime(timezone=True), nullable=False),
+    Column('spotted_time', DateTime(timezone=True), nullable=False)
 )
 
 class Animal(base):
@@ -22,10 +23,10 @@ class Animal(base):
 
     id = Column(BigInteger, primary_key=True,autoincrement=True)
     genus_id = Column(BigInteger, ForeignKey('genus.id'))
-    gender = Column() #Gedanken machen
+    gender = Column(String, nullable=False) #Gedanken machen
     estimated_age = Column(Integer)
-    estimated_weight = Column(float)
-    estimated_size = Column(float)
+    estimated_weight = Column(Float)
+    estimated_size = Column(Float)
     location = relationship(
         "Location",
         secondary= spotted,
@@ -60,3 +61,10 @@ class genus(base):
 
     id = Column(BigInteger, primary_key=True,autoincrement=True)
     species_name = Column(String(25), nullable=False)
+
+
+def create_tables():
+    base.metadata.create_all(engine)
+
+if __name__ == "__main__":
+    create_tables()
