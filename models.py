@@ -11,12 +11,31 @@ conn = engine.connect()
 Session = sessionmaker()
 my_session = Session(bind=engine)
 
+'''
 spotted = Table('spotted', base.metadata,
     Column('animal_id', ForeignKey('animals.id'), primary_key=True),
     Column('location_id', ForeignKey('locations.location_number'), primary_key=True),
     Column('spotted_date', DateTime(timezone=True), nullable=False),
     Column('spotted_time', DateTime(timezone=True), nullable=False)
 )
+'''
+
+class Observation(base):
+    __tablename__ = 'observations'
+
+    id = Column(BigInteger, primary_key=True,autoincrement=True)
+    animal_id = Column(BigInteger, ForeignKey('animals.id'), nullable=False)
+    location_id = Column(BigInteger, ForeignKey('locations.location_number'), nullable=False)
+    observation_time = Column(DateTime(timezone=True), nullable=False)
+
+    animal = relationship('Animal', backref='observations')
+    location = relationship('Location', backref='observations')
+
+    def __init__(self, animal, location, observation_time):
+        self.animal = animal
+        self.location = location
+        self.observation_time = observation_time
+
 
 class Animal(base):
     __tablename__= 'animals'
@@ -27,11 +46,8 @@ class Animal(base):
     estimated_age = Column(Integer)
     estimated_weight = Column(Float)
     estimated_size = Column(Float)
-    location = relationship(
-        "Location",
-        secondary= spotted,
-        back_populates="animals"
-    )
+
+    locations = relationship("Location", secondary="observations", viewonly=True)
 
     def __init__(self, genus_id, gender, estimated_age, estimated_weight, estimated_size):
         self.genus_id =genus_id
@@ -46,11 +62,8 @@ class Location(base):
     location_number = Column(BigInteger, primary_key=True,autoincrement=True)
     short_title = Column(String(20), nullable=False)
     description = Column(String, nullable=False)
-    animal = relationship(
-        "Animal",
-        secondary= spotted,
-        back_populates="locations"
-    )
+
+    animals = relationship("Animal", secondary="observations", viewonly=True)
 
     def __init__(self, short_title, description):
         self.short_title = short_title
