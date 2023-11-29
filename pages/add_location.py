@@ -8,6 +8,8 @@ import os
 from datetime import datetime
 from models import my_session as session
 
+dash.register_page(__name__)
+
 # Layout der Seite zum Hinzufügen von Location
 layout = html.Div([
     html.H1("Add Location"),
