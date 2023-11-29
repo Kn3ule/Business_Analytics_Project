@@ -11,14 +11,6 @@ conn = engine.connect()
 Session = sessionmaker()
 my_session = Session(bind=engine)
 
-'''
-spotted = Table('spotted', base.metadata,
-    Column('animal_id', ForeignKey('animals.id'), primary_key=True),
-    Column('location_id', ForeignKey('locations.location_number'), primary_key=True),
-    Column('spotted_date', DateTime(timezone=True), nullable=False),
-    Column('spotted_time', DateTime(timezone=True), nullable=False)
-)
-'''
 
 class Observation(base):
     __tablename__ = 'observations'
@@ -26,15 +18,17 @@ class Observation(base):
     id = Column(BigInteger, primary_key=True,autoincrement=True)
     animal_id = Column(BigInteger, ForeignKey('animals.id'), nullable=False)
     location_id = Column(BigInteger, ForeignKey('locations.location_number'), nullable=False)
-    observation_time = Column(DateTime(timezone=True), nullable=False)
+    start_time = Column(DateTime(timezone=True), nullable=False)
+    end_time = Column(DateTime(timezone=True), nullable=False)
 
     animal = relationship('Animal', backref='observations')
     location = relationship('Location', backref='observations')
 
-    def __init__(self, animal, location, observation_time):
+    def __init__(self, animal, location, start_time, end_time):
         self.animal = animal
         self.location = location
-        self.observation_time = observation_time
+        self.start_time = start_time
+        self.end_time = end_time
 
 
 class Animal(base):
@@ -42,16 +36,18 @@ class Animal(base):
 
     id = Column(BigInteger, primary_key=True,autoincrement=True)
     genus_id = Column(BigInteger, ForeignKey('genus.id'))
-    gender = Column(String, nullable=False) #Gedanken machen
+    gender = Column(String, nullable=False)
+    visual_features = Column(String (100), nullable=False)
     estimated_age = Column(Integer)
     estimated_weight = Column(Float)
     estimated_size = Column(Float)
 
     locations = relationship("Location", secondary="observations", viewonly=True)
 
-    def __init__(self, genus_id, gender, estimated_age, estimated_weight, estimated_size):
+    def __init__(self, genus_id, gender, visual_features, estimated_age, estimated_weight, estimated_size):
         self.genus_id =genus_id
         self.gender = gender
+        self.visual_features = visual_features
         self.estimated_age = estimated_age
         self.estimated_weight = estimated_weight
         self.estimated_size = estimated_size
