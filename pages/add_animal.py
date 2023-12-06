@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 from models import my_session as session
 
-dash.register_page(__name__, path='/')
+dash.register_page(__name__)
 
 # Funktion zum Laden der neuesten Genus-Optionen
 def load_genus_options():

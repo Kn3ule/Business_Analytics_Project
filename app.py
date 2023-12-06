@@ -1,18 +1,36 @@
 import dash
 from dash import html, dcc
 import models
+import dash_bootstrap_components as dbc
 
-app = dash.Dash(__name__, use_pages=True)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], use_pages=True)
+
+
+nav2 = dbc.NavbarSimple(
+    [
+        dbc.DropdownMenu(
+            children=[
+                dbc.DropdownMenuItem(page['name'], href=page['path'])
+                for page in dash.page_registry.values() if "Add" in page['name'] 
+            ],
+            nav=True,
+            in_navbar=True,
+            label="Add Wildlife",
+        ),
+        dbc.NavItem(dbc.NavLink("Analyze", href="/analyze-data")),
+    ],
+    brand="Wildlife Tracker",
+    brand_href="/",
+    color="black",
+    dark=True,
+)
 
 app.layout = html.Div(
     [
         dcc.Location(id='url', refresh=False),
         # main app framework
-        html.Div("Python Multipage App with Dash", style={'fontSize':50, 'textAlign':'center'}),
-        html.Div([
-            dcc.Link(page['name']+"  |  ", href=page['path'])
-            for page in dash.page_registry.values()
-        ]),
+        #html.Div("Wildlife App", style={'fontSize':50, 'textAlign':'center'}),
+        nav2,
         html.Hr(),
 
         # content of each page
