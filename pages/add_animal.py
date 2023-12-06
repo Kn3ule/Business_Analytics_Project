@@ -8,24 +8,24 @@ import os
 from datetime import datetime
 from models import my_session as session
 
-dash.register_page(__name__, path='/')
-
 # Funktion zum Laden der neuesten Genus-Optionen
 def load_genus_options():
     return [{'label': g.species_name, 'value': g.id} for g in session.query(genus).all()]
-
+global genus_options
+genus_options = load_genus_options()
+print("genus_options"+str(genus_options))
 
 # Layout der Seite zum Hinzufügen von Tierdaten
 layout = html.Div([
     html.H1("Add Animal Data"),
-    dcc.Dropdown(id='genus-dropdown', options=[], placeholder='Select Genus'),
-    dcc.Dropdown(id='gender-dropdown', options=["male", "female", "diverse"], placeholder='Select Gender'),
+    dcc.Dropdown(id='genus-dropdown', options=["label", "Test"], placeholder='Select Genus', style={'width': '55%', 'margin': '5px'}),
+    dcc.Dropdown(id='gender-dropdown', options=["male", "female", "diverse"], placeholder='Select Gender', style={'width': '55%', 'margin': '5px'}),
     dcc.Input(id='visual-features', type='text', placeholder='Visual Features'),
     dcc.Input(id='estimated-age', type='number', placeholder='Estimated Age'),
     dcc.Input(id='estimated-weight', type='number', placeholder='Estimated Weight'),
     dcc.Input(id='estimated-size', type='number', placeholder='Estimated Size'),
 
-    
+
     html.Button('Submit', id='submit-animal-button'),
     html.Div(id='animal-output-message')
 ])
@@ -56,7 +56,7 @@ def update_genus_options(pathname):
 def save_animal(n_clicks, genus_id, gender, visual_features, estimated_age, estimated_weight, estimated_size):
     if n_clicks is None:
         return None
-    
+
     try:
 
         animal = Animal(
@@ -75,3 +75,6 @@ def save_animal(n_clicks, genus_id, gender, visual_features, estimated_age, esti
 
     except Exception as e:
         return f"Fehler beim Hinzufügen des Tiers: {e}"
+
+# For each page, register the layout and callback
+dash.register_page(__name__, layout=layout, callback=[update_genus_options, save_animal], path='/')

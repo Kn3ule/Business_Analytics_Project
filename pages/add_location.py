@@ -8,8 +8,6 @@ import os
 from datetime import datetime
 from models import my_session as session
 
-dash.register_page(__name__)
-
 # Layout der Seite zum Hinzufügen von Location
 layout = html.Div([
     html.H1("Add Location"),
@@ -33,3 +31,6 @@ def add_location(n_clicks, short_title, description):
         session.commit()
         return "Location added successfully."
     return None
+
+# For each page, register the layout and callback
+dash.register_page(__name__, layout=layout, callback=add_location)
