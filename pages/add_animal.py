@@ -34,7 +34,7 @@ layout = html.Div([
 @callback(Output('genus-dropdown', 'options'),
           [Input('url', 'pathname')])
 def update_genus_options(pathname):
-    if pathname == '/':
+    if pathname == '/add-animal':
         return load_genus_options()
     return []
 
