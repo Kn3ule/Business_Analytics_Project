@@ -8,6 +8,8 @@ import os
 from datetime import datetime
 from models import my_session as session
 
+dash.register_page(__name__)
+
 # Layout der Seite zum Hinzufügen von Genus
 layout = html.Div([
     html.H1("Add Genus"),
@@ -29,6 +31,3 @@ def add_genus(n_clicks, species_name):
         session.commit()
         return "Genus added successfully."
     return None
-
-# For each page, register the layout and callback
-dash.register_page(__name__, layout=layout, callback=add_genus)

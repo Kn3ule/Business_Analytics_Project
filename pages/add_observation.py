@@ -8,6 +8,8 @@ import os
 from datetime import datetime
 from models import my_session as session, engine, Session
 
+dash.register_page(__name__)
+
 # Funktion zum Laden der neuesten Genus-Optionen
 def load_genus_options():
     new_session = Session(bind=engine)
@@ -17,9 +19,6 @@ def load_genus_options():
         # Close the session when done
         new_session.close()
     return genus_options
-
-global genus_options
-genus_options = load_genus_options()
 
 # Funktion zum Laden der neuesten Location-Optionen
 def load_location_options():
@@ -44,11 +43,9 @@ def load_animal_options():
 
 layout = html.Div([
     html.H1("Add Observation"),
-    dcc.Dropdown(id='filter-dropdown', options=genus_options, placeholder='Select Genus'),
-    dcc.Dropdown(id='animal-dropdown', options=[{'label': name[0], 'value': name[0]} for name in session.query(Animal.visual_features).all()], placeholder='Select Animal'),
-    dcc.Dropdown(id='location-dropdown', options=[{'label': name[0], 'value': name[0]} for name in session.query(Location.short_title).all()], placeholder='Select Location'),
-
-
+    dcc.Dropdown(id='filter-dropdown', options=[], placeholder='Select Genus'),
+    dcc.Dropdown(id='animal-dropdown', options=[], placeholder='Select Animal'),
+    dcc.Dropdown(id='location-dropdown', options=[], placeholder='Select Location'),
     html.Label('Spotted Date Start:'),
     dcc.DatePickerSingle(
         id='spotted-date-start',
@@ -128,6 +125,3 @@ def add_observation(n_clicks, genus_id, animal_id, location_id, spotted_date_sta
         session.commit()
         return "Observation added successfully."
     return None
-
-# For each page, register the layout and callback
-dash.register_page(__name__, layout=layout, callback=[update_genus_options, update_location_options, update_animal_options, add_observation])
