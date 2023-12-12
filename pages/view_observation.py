@@ -9,9 +9,77 @@ from datetime import datetime
 from models import my_session as session
 
 
-dash.register_page(__name__, path='/view-observation/')
+dash.register_page(__name__, path_template='/view-observation/<observation_id>')
 
-# Layout der Seite zum Hinzufügen von Location
-layout = html.Div([
-    html.H1("View Observation Data"),
-])
+
+def layout(observation_id=None):
+
+    if observation_id is not None:
+        observation_data = session.query(Observation).filter_by(id=observation_id).all()[0]
+        animal_data = session.query(Animal).filter_by(id=observation_data.animal_id).all()[0]
+        location_data = session.query(Location).filter_by(location_number=observation_data.location_id).all()[0]
+        genus_data = session.query(genus).filter_by(id=animal_data.genus_id).all()[0]
+
+        return html.Div(style={'maxWidth': '800px', 'margin': '0 auto', 'padding': '20px'}, children=[
+            html.H1('Observation Details'),  # Header for Observation Details
+            html.Div(style={'display': 'flex'}, children=[
+                html.Div(style={'flex': '50%', 'marginRight': '20px'}, children=[
+                    html.H4('Time'),  # Moved Observation Details section within a div
+                    html.Div(style={'display': 'flex', 'flexDirection': 'column', 'height': '100%'}, children=[
+                        html.Div(style={'marginBottom': '20px', 'display': 'flex', 'alignItems': 'center'}, children=[
+                            html.Strong('Start Time:', style={'fontWeight': 'bold'}),
+                            html.Span(observation_data.start_time, style={'marginLeft': '10px'})
+                        ]),
+                        html.Div(style={'marginBottom': '20px', 'display': 'flex', 'alignItems': 'center'}, children=[
+                            html.Strong('End Time:', style={'fontWeight': 'bold'}),
+                            html.Span(observation_data.end_time, style={'marginLeft': '10px'})
+                        ]),
+                        html.H4('Location'),
+                        html.Div(style={'marginBottom': '20px', 'display': 'flex', 'alignItems': 'center'}, children=[
+                            html.Strong('Location:', style={'fontWeight': 'bold'}),
+                            html.Span(location_data.short_title, style={'marginLeft': '10px'})
+                        ]),
+                        html.Div(style={'display': 'flex', 'alignItems': 'center'}, children=[
+                            html.Strong('Location Description:', style={'fontWeight': 'bold'}),
+                            html.Span(location_data.description, style={'marginLeft': '10px'})
+                        ]),
+                    ]),
+                ]),
+                html.Div(style={'flex': '50%'}, children=[
+                    html.H4('Observed Animal'),  # Header for Observed Animal Details
+                    html.Div(style={'marginBottom': '20px'}, children=[
+                        html.Strong('Gender:', style={'fontWeight': 'bold'}),
+                        html.Span(animal_data.gender, style={'marginLeft': '10px'})
+                    ]),
+                    html.Div(style={'marginBottom': '20px'}, children=[
+                        html.Strong('Visual Features:', style={'fontWeight': 'bold'}),
+                        html.Span(animal_data.visual_features, style={'marginLeft': '10px'})
+                    ]),
+                    html.Div(style={'marginBottom': '20px'}, children=[
+                        html.Strong('Estimated Age:', style={'fontWeight': 'bold'}),
+                        html.Span(animal_data.estimated_age, style={'marginLeft': '10px'})
+                    ]),
+                    html.Div(style={'marginBottom': '20px'}, children=[
+                        html.Strong('Estimated Weight:', style={'fontWeight': 'bold'}),
+                        html.Span(animal_data.estimated_weight, style={'marginLeft': '10px'})
+                    ]),
+                    html.Div(style={'marginBottom': '20px'}, children=[
+                        html.Strong('Estimated Size:', style={'fontWeight': 'bold'}),
+                        html.Span(animal_data.estimated_size, style={'marginLeft': '10px'})
+                    ]),
+                    html.Div(style={'marginBottom': '20px'}, children=[
+                        html.Strong('Genus:', style={'fontWeight': 'bold'}),
+                        html.Span(genus_data.species_name, style={'marginLeft': '10px'})
+                    ]),
+                ]),
+            ]),
+            html.Div(style={'textAlign': 'left', 'marginTop': '20px'}, children=[
+                html.A(html.Button('Edit Observation', id='edit-button', n_clicks=0, style={'padding': '10px 20px'}), href='/edit-observation/'+str(observation_id)),
+      ]),
+        ])
+
+
+
+
+    else:
+        return html.Div("No observation ID was provided.")
