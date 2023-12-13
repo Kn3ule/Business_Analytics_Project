@@ -34,10 +34,12 @@ def load_analysis(genus_id):
                 r.assign('idGenus', genus_id)
                 r.source("genus_specific_analytics.R")
                 r_variables = robjects.r['readRDS']("variables.RDS")
-                number_animals_genus.append(int(r_variables[0].replace("[", "").replace("]", "")))
+                # Assuming r_variables[0] is an IntVector
+                for value in r_variables[0]:
+                    number_animals_genus.append(int(value))
                 genus_names.append(genus_value.species_name)
 
-        return number_animals_genus, genus_names
+        return genus_names, number_animals_genus
 
 
     return [], []
@@ -51,7 +53,7 @@ layout = html.Div([
 
 @callback(Output('number-animal-genus-bar-chart', 'figure'),
               [Input('url', 'pathname')],
-prevent_initial_call = True
+#prevent_initial_call = True
 )
 def update_analysis_all(pathname):
     if pathname == '/analyze-data':
