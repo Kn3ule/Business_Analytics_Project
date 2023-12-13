@@ -1,15 +1,21 @@
 # install just one time
 #options(repos = c(CRAN = "https://packagemanager.rstudio.com/all/latest"))
-#install.packages("RPostgreSQL", lib="C:/Users/Moritz/AppData/Local/R/win-library/4.3")
-library(RPostgreSQL)
+#install.packages("RPostgreSQL")
 
-# Database connection
-con <- dbConnect(PostgreSQL(),
-                 dbname = "Business_Analytics_Project",
-                 user = "postgres",
-                 password = "",
-                 host = "localhost",
-                 port = 5432)
+# Update all installed packages
+#update.packages()
+
+library(RPostgres)
+
+# Establish a connection using RPostgres
+con <- dbConnect(
+  RPostgres::Postgres(),
+  dbname = "observationsDB",
+  user = "postgres",
+  password = "password",
+  host = "localhost",
+  port = 5432
+)
 
 # Query statement in the database
 sql_query <- "SELECT * FROM animals"
