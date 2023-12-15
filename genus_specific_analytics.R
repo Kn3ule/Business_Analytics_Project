@@ -1,6 +1,6 @@
 # install just one time
 #options(repos = c(CRAN = "https://packagemanager.rstudio.com/all/latest"))
-#install.packages("RPostgreSQL")
+#install.packages("RPostgres")
 
 # Update all installed packages
 #update.packages()
@@ -10,9 +10,9 @@ library(RPostgres)
 # Establish a connection using RPostgres
 con <- dbConnect(
   RPostgres::Postgres(),
-  dbname = "observationsDB",
+  dbname = "Business_Analytics_Project",
   user = "postgres",
-  password = "password",
+  password = "",
   host = "localhost",
   port = 5432
 )
@@ -69,7 +69,7 @@ calculate_medianAgeGenus <- function() {
 numberAnimalsOfGenus <- calculate_numberAnimalsGenus()
 averageAgeGenus_result <- calculate_averageAgeGenus()
 averageWeightGenus_result <- calculate_averageWeightGenus()
-averageSizGenus_result <- calculate_averageSizeGenus()
+averageSizeGenus_result <- calculate_averageSizeGenus()
 medianAgeGenus_result <- calculate_medianAgeGenus()
 
 standard_deviation_age <- round(sd(filter_genus$estimated_age), digits = 2)
@@ -78,4 +78,4 @@ standard_deviation_size <- round(sd(filter_genus$estimated_size), digits = 2)
 
 
 # Safe results in RDS-File
-saveRDS(list(numberAninmalsOfGenus = numberAnimalsOfGenus, numberOfAllAnimals = num_all_animals ,averageAgeGenus = averageAgeGenus_result, standardDeviationAge = standard_deviation_age, averageWeightGenus = averageWeightGenus_result, standardDeviationWeight = standard_deviation_weight, averageSizeGenus = averageSizGenus_result, standardDeviationSize = standard_deviation_size , medianAgeGenus = medianAgeGenus_result), file = "variables.RDS")
+saveRDS(list(numberAninmalsOfGenus = numberAnimalsOfGenus, numberOfAllAnimals = num_all_animals ,averageAgeGenus = averageAgeGenus_result, standardDeviationAge = standard_deviation_age, averageWeightGenus = averageWeightGenus_result, standardDeviationWeight = standard_deviation_weight, averageSizeGenus = averageSizeGenus_result, standardDeviationSize = standard_deviation_size , medianAgeGenus = medianAgeGenus_result), file = "variables.RDS")
