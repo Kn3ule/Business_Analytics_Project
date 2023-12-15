@@ -17,6 +17,15 @@ nav2 = dbc.NavbarSimple(
             in_navbar=True,
             label="Add Wildlife",
         ),
+        dbc.DropdownMenu(
+                    children=[
+                        dbc.DropdownMenuItem(page['name'], href=page['path'])
+                        for page in dash.page_registry.values() if "View" in page['name'] and "observation" not in page['name']
+                    ],
+                    nav=True,
+                    in_navbar=True,
+                    label="Edit Wildlife",
+                ),
         dbc.NavItem(dbc.NavLink("Analyze", href="/analyze-data")),
     ],
     brand="Wildlife Tracker",
@@ -31,7 +40,7 @@ app.layout = html.Div(
         # main app framework
         #html.Div("Wildlife App", style={'fontSize':50, 'textAlign':'center'}),
         nav2,
-        html.Hr(),
+        #html.Hr(),
 
         # content of each page
         dash.page_container
