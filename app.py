@@ -26,7 +26,16 @@ nav2 = dbc.NavbarSimple(
                     in_navbar=True,
                     label="Edit Wildlife",
                 ),
-        dbc.NavItem(dbc.NavLink("Analyze", href="/analyze-data")),
+
+        dbc.DropdownMenu(
+                    children=[
+                        dbc.DropdownMenuItem(page['name'], href=page['path'])
+                        for page in dash.page_registry.values() if "Analyze" in page['name']
+                    ],
+                    nav=True,
+                    in_navbar=True,
+                    label="Analyze",
+                ),
     ],
     brand="Wildlife Tracker",
     brand_href="/",

@@ -241,3 +241,5 @@ def update_analysis_all(pathname):
                     )
 
         return fig_number,fig_average_age,fig_average_weight,fig_average_size
+    else:
+        return dash.no_update, dash.no_update, dash.no_update, dash.no_update
