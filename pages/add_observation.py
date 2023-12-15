@@ -31,31 +31,35 @@ def load_animal_options():
         new_session.close()
     return animal_options
 
-layout = html.Div([
-    html.H1("Add Observation"),
-    dcc.Dropdown(id='animal-dropdown', options=[], placeholder='Select Animal'),
-    dcc.Dropdown(id='location-dropdown', options=[], placeholder='Select Location'),
-    html.Label('Spotted Date Start:'),
-    dcc.DatePickerSingle(
-        id='spotted-date-start',
-        display_format='YYYY-MM-DD',
-        placeholder='Select Date'
-    ),
-    html.Label('Spotted Time Start:'),
-    dcc.Input(id='spotted-time-start', type='text', placeholder='HH:MM:SS'),
+layout = html.Div(
+style={'backgroundImage': f'url("https://s1.1zoom.me/big0/292/346934-admin.jpg")', 'backgroundSize': 'cover','height': '100vh'},
+    children=[
+    html.Div(
+        [
 
-    html.Label('Spotted Date End:'),
-    dcc.DatePickerSingle(
-        id='spotted-date-end',
-        display_format='YYYY-MM-DD',
-        placeholder='Select Date'
-    ),
-    html.Label('Spotted Time End:'),
-    dcc.Input(id='spotted-time-end', type='text', placeholder='HH:MM:SS'),
+    html.H1("Add Observation", className="display-4 text-center mb-4",style={'font-size': '3em','font-weight': 'bold'}),
+    dcc.Dropdown(id='animal-dropdown', options=[], placeholder='Select Animal', className="form-control mb-3"),
+    dcc.Dropdown(id='location-dropdown', options=[], placeholder='Select Location', className="form-control mb-3"),
 
-    html.Button('Add Observation', id='add-observation-button'),
+    dcc.DatePickerSingle(
+        id='spotted-date-start', display_format='YYYY-MM-DD', placeholder='Start Date', className="form-control mb-3",
+    ),
+
+    dcc.Input(id='spotted-time-start', type='text', placeholder='Start Time', className="form-control mb-3"),
+
+    dcc.DatePickerSingle(
+    id='spotted-date-end', display_format='YYYY-MM-DD', placeholder='End Date', className="form-control mb-3"
+    ),
+
+    dcc.Input(id='spotted-time-end', type='text', placeholder='End Time', className="form-control mb-3"),
+
+    html.Button('Add Observation', id='add-observation-button', className="btn btn-secondary"),
     html.Div(id='observation-output-message')
-])
+    ],
+        className="container p-5",
+        style={'max-width': '600px'}
+    )
+    ])
 
 # Callback-Funktion zum Laden der neuesten Location-Optionen
 @callback(Output('location-dropdown', 'options'),

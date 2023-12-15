@@ -23,7 +23,14 @@ def layout(id=None):
         animal_data = session.query(Animal).filter_by(id=observation_data.animal_id).all()[0]
         location_data = session.query(Location).filter_by(location_number=observation_data.location_id).all()[0]
 
-        return html.Div(style={'maxWidth': '800px', 'margin': '0 auto', 'padding': '20px'}, children=[
+        return html.Div(
+            style={'backgroundImage': f'url("https://s1.1zoom.me/big0/945/Forests_Stones_Wolves_498359.jpg")', 'backgroundSize': 'cover',
+                   'height': '100vh', 'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'},
+            children=[
+                html.Div(style={'maxWidth': '800px', 'padding': '20px', 'border': '2px solid #ccc',
+                                'borderRadius': '10px', 'background-color': 'rgba(255, 255, 255, 0.9)',
+                                'marginTop': '50px'},
+                         children=[
     html.H1('Edit Observation'),  # Header for Observation Details
     html.Div(style={'display': 'flex'}, children=[
         html.Div(style={'flex': '50%', 'marginRight': '20px'}, children=[
@@ -75,6 +82,7 @@ def layout(id=None):
             html.Button('Save Changes', id='save-button', n_clicks=0, style={'padding': '10px 20px'}), href='/view-observation/' + str(observation_id)),
     ]),
     html.Div(id='output-container', style={'marginTop': '20px'})
+])
 ])
     else:
         return html.Div("No observation ID was provided.")

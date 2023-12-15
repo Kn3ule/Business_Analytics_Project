@@ -24,24 +24,37 @@ def load_observations ():
                 genus ON animals.genus_id = genus.id
             ORDER BY "End Time" DESC;""", engine)
 
-layout = html.Div([
-    html.H1("Recent Observations"),
+layout = html.Div(
+    style={'backgroundImage': f'url("https://s1.1zoom.me/b6869/14/Forests_Deer_Trees_Fog_557999_1920x1080.jpg")', 'backgroundSize': 'cover','height': '100vh'},
+    children=[
+        html.H1("Recent Observations",className="display-4 text-center mb-4", style={'font-size': '3em','font-weight': 'bold'}),
     html.Div(id='recent-observations-table')
+
 ])
 
 @callback(Output('recent-observations-table', 'children'),
             [Input('url', 'pathname')])
 def update_recent_observations(pathname):
     if pathname == '/':
-        return html.Table(children=[
-        html.Tr([html.Th(col, style={'padding': '8px'}) for col in load_observations().columns] + [html.Th("Details", style={'padding': '8px', 'margin': '0'})]),
-        *[
-            html.Tr([
-                html.Td(str(row[col]), style={'padding': '8px'}) for col in load_observations().columns
-            ] + [
-                html.Td(html.A("View Details", href=f"/view-observation/{row['ID']}", style={'padding': '8px'})),  # Replace 'id' with your unique identifier
-            ]) for row in load_observations().to_dict('records')
-        ]
-        ], style={'border-spacing': '10px'})
+        return html.Table(
+            children=[
+                # Table Header
+                html.Thead(
+                    html.Tr([
+                        html.Th(col, style={'padding': '12px', 'text-align': 'center', 'font-weight': 'bold', 'background-color': '#343a40', 'color': 'white'}) for col in load_observations().columns
+                    ] + [html.Th("Details", style={'padding': '12px', 'margin': '0', 'text-align': 'center', 'font-weight': 'bold', 'background-color': '#343a40', 'color': 'white'})])
+                ),
+                # Table Body
+                html.Tbody([
+                    html.Tr([
+                        html.Td(str(row[col]), style={'padding': '12px', 'text-align': 'center'}) for col in load_observations().columns
+                    ] + [
+                        html.Td(html.A("View Details", href=f"/view-observation/{row['ID']}", style={'padding': '12px', 'text-align': 'center'})),
+                    ]) for row in load_observations().to_dict('records')
+                ])
+            ],
+            className="table",
+            style={'margin': 'auto', 'max-width': '800px', 'overflow': 'hidden'},  # Zentrieren und begrenzte Breite für bessere Lesbarkeit
+        )
     return []
 

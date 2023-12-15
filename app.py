@@ -30,7 +30,7 @@ nav2 = dbc.NavbarSimple(
     ],
     brand="Wildlife Tracker",
     brand_href="/",
-    color="black",
+    color="dark",
     dark=True,
 )
 

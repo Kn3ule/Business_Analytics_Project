@@ -14,21 +14,30 @@ dash.register_page(__name__)
 def load_genus_options():
     return [{'label': g.species_name, 'value': g.id} for g in session.query(genus).all()]
 
+layout = html.Div(
+    style={'backgroundImage': f'url("https://s1.1zoom.me/big0/479/Rivers_Forests_Mountains_American_bison_Grass_516890_1280x821.jpg")', 'backgroundSize': 'cover','height': '100vh'},
+    children=[
+        html.Div(
+        [
+            html.H1("Add animal", className="display-4 text-center mb-4", style={'font-size': '3em','font-weight': 'bold'}),
 
-# Layout der Seite zum Hinzufügen von Tierdaten
-layout = html.Div([
-    html.H1("Add Animal Data"),
-    dcc.Dropdown(id='genus-dropdown', options=[], placeholder='Select Genus'),
-    dcc.Dropdown(id='gender-dropdown', options=["male", "female", "diverse"], placeholder='Select Gender'),
-    dcc.Input(id='visual-features', type='text', placeholder='Visual Features'),
-    dcc.Input(id='estimated-age', type='number', placeholder='Estimated Age'),
-    dcc.Input(id='estimated-weight', type='number', placeholder='Estimated Weight'),
-    dcc.Input(id='estimated-size', type='number', placeholder='Estimated Size'),
+            dcc.Dropdown(id='genus-dropdown', options=[], placeholder='Select Genus', className="form-control mb-3"),
+            dcc.Dropdown(id='gender-dropdown', options=["Male", "Female", "Diverse"], placeholder='Select Gender',
+                         className="form-control mb-3"),
 
-    
-    html.Button('Submit', id='submit-animal-button'),
-    html.Div(id='animal-output-message')
+            dcc.Input(id='visual-features', type='text', placeholder='Visual Features', className="form-control mb-3"),
+            dcc.Input(id='estimated-age', type='number', placeholder='Estimated Age (years)', className="form-control mb-3"),
+            dcc.Input(id='estimated-weight', type='number', placeholder='Estimated Weight (kg)', className="form-control mb-3"),
+            dcc.Input(id='estimated-size', type='number', placeholder='Estimated Size (cm)', className="form-control mb-3"),
+
+            html.Button('Submit', id='submit-animal-button', className="btn btn-secondary"),
+            html.Div(id='animal-output-message', className="mt-3"),
+        ],
+        className="container p-5",
+        style={'max-width': '600px'}
+    )
 ])
+
 
 # Callback-Funktion zum Laden der neuesten Genus-Optionen
 @callback(Output('genus-dropdown', 'options'),
@@ -37,8 +46,6 @@ def update_genus_options(pathname):
     if pathname == '/add-animal':
         return load_genus_options()
     return []
-
-
 
 # Callback-Funktion zum Speichern von Tierdaten
 @callback(
