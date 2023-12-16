@@ -36,7 +36,7 @@ def load_analysis(genus_id):
                 genus_id = genus_value.id
                 r.assign('idGenus', genus_id)
 
-                robjects.r.source('genus_specific_analytics.R')
+                robjects.r.source('genus_analytics.R')
 
                 r_variables = robjects.r['readRDS']("variables.RDS")
 
@@ -101,16 +101,16 @@ def load_analysis(genus_id):
 # Layout der Seite zum Hinzufügen von Location
 layout = html.Div([
     html.Div([
-        html.H1("Analyze Wildlife Data", style={'font-weight': 'normal'})
-    ], style={'text-align': 'center'}),
+        html.H1("Analyze Wildlife Data", style={'font-weight': 'bold'})
+    ], style={'text-align': 'center', 'padding-top': '50px'}),
 
     html.Div([
-        html.Div([dcc.Graph(id='number-animal-genus-bar-chart')],style={'width': '50%','weight': '50%', 'display': 'inline-block','vertical-align': 'top'}),
-        html.Div([dcc.Graph(id='average-age-genus-bar-chart')],style={'width': '50%','weight': '50%', 'display': 'inline-block','vertical-align': 'top'}),
+        html.Div([dcc.Graph(id='number-animal-genus-bar-chart')],style={'width': '50%','height': '50%', 'display': 'inline-block','vertical-align': 'top'}),
+        html.Div([dcc.Graph(id='average-age-genus-bar-chart')],style={'width': '50%','height': '50%', 'display': 'inline-block','vertical-align': 'top'}),
     ]),
     html.Div([
-        html.Div([dcc.Graph(id='average-weight-genus-bar-chart')],style={'width': '50%','weight': '50%', 'display': 'inline-block','vertical-align': 'top'}),
-        html.Div([dcc.Graph(id='average-size-genus-bar-chart')],style={'width': '50%','weight': '50%', 'display': 'inline-block','vertical-align': 'top'}),
+        html.Div([dcc.Graph(id='average-weight-genus-bar-chart')],style={'width': '50%','height': '50%', 'display': 'inline-block','vertical-align': 'top'}),
+        html.Div([dcc.Graph(id='average-size-genus-bar-chart')],style={'width': '50%','height': '50%', 'display': 'inline-block','vertical-align': 'top'}),
     ]),
 ], style={'background-color': 'rgba(224, 238, 224)'})
 

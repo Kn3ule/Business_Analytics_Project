@@ -1,10 +1,3 @@
-# install just one time
-#options(repos = c(CRAN = "https://packagemanager.rstudio.com/all/latest"))
-#install.packages("RPostgres")
-
-# Update all installed packages
-#update.packages()
-
 library(RPostgres)
 
 # Establish a connection using RPostgres
@@ -25,6 +18,15 @@ num_all_animals <- nrow(dataAnimals)
 # Filter data in dataAnimals by genus
 filter_genus <- dataAnimals[dataAnimals$genus_id == idGenus,]
 
+#max_age_value <- max(filter_genus$estimated_age)
+
+tryCatch({
+  max_age_value <- max(filter_genus$estimated_age)
+},error = function(e) {
+  # Hier können Sie den Fehler behandeln oder eine Meldung ausgeben
+  cat("No data to calculate maxAge", conditionMessage(e), "\n")
+})
+
 calculate_numberAnimalsGenus <- function() {
   # Count rows in filter_genus
   num_animals <- nrow(filter_genus)
@@ -32,50 +34,8 @@ calculate_numberAnimalsGenus <- function() {
   # Return value rows
   return(num_animals)
 }
-
-calculate_averageAgeGenus <- function() {
-  # Calculate average age with relvant data
-  averageAge <- mean(filter_genus$estimated_age)
-
-  # Return value of averageAge
-  return(round(averageAge, digits = 2))
-}
-
-calculate_averageWeightGenus <- function() {
-  # Calculate average weight with relvant data
-  averageWeight <- mean(filter_genus$estimated_weight)
-
-  # Return value of averageWeight
-  return(round(averageWeight, digits = 2))
-}
-
-calculate_averageSizeGenus <- function() {
-  # Calculate average size with relvant data
-  averageSize <- mean(filter_genus$estimated_size)
-
-  # Return value of averageSize
-  return(round(averageSize, digits = 2))
-}
-
-calculate_medianAgeGenus <- function() {
-  # Calculate median age with relvant data
-  medianAge <- median(filter_genus$estimated_age)
-
-  # Return value of median
-  return(medianAge)
-}
-
-# Call functions
 numberAnimalsOfGenus <- calculate_numberAnimalsGenus()
-averageAgeGenus_result <- calculate_averageAgeGenus()
-averageWeightGenus_result <- calculate_averageWeightGenus()
-averageSizeGenus_result <- calculate_averageSizeGenus()
-medianAgeGenus_result <- calculate_medianAgeGenus()
 
-standard_deviation_age <- round(sd(filter_genus$estimated_age), digits = 2)
-standard_deviation_weight <- round(sd(filter_genus$estimated_weight), digits = 2)
-standard_deviation_size <- round(sd(filter_genus$estimated_size), digits = 2)
+percentage_of_animal <- round((numberAnimalsOfGenus / num_all_animals) * 100, 2)
 
-
-# Safe results in RDS-File
-saveRDS(list(numberAninmalsOfGenus = numberAnimalsOfGenus, numberOfAllAnimals = num_all_animals ,averageAgeGenus = averageAgeGenus_result, standardDeviationAge = standard_deviation_age, averageWeightGenus = averageWeightGenus_result, standardDeviationWeight = standard_deviation_weight, averageSizeGenus = averageSizeGenus_result, standardDeviationSize = standard_deviation_size , medianAgeGenus = medianAgeGenus_result), file = "variables.RDS")
+saveRDS(list(numberAllAninmals = num_all_animals, numberAnimalsGenus = numberAnimalsOfGenus, highestAnimalAge = max_age_value, percent = percentage_of_animal), file = "genus_specific.RDS")
