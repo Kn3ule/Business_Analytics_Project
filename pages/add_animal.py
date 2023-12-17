@@ -7,6 +7,7 @@ from models import Animal, Location, genus, base, Observation
 import os
 from datetime import datetime
 from models import my_session as session
+import dash_bootstrap_components as dbc
 
 dash.register_page(__name__)
 
@@ -19,6 +20,7 @@ layout = html.Div(
     children=[
         html.Div(
         [
+            html.Div(id="alert-output-add-animal"),
             html.H1("Add animal", className="display-4 text-center mb-4", style={'font-size': '3em','font-weight': 'bold'}),
 
             dcc.Dropdown(id='genus-dropdown', options=[], placeholder='Select Genus', className="form-control mb-3"),
@@ -26,12 +28,12 @@ layout = html.Div(
                          className="form-control mb-3"),
 
             dcc.Input(id='visual-features', type='text', placeholder='Visual Features', className="form-control mb-3"),
-            dcc.Input(id='estimated-age', type='number', placeholder='Estimated Age (years)', className="form-control mb-3"),
-            dcc.Input(id='estimated-weight', type='number', placeholder='Estimated Weight (kg)', className="form-control mb-3"),
-            dcc.Input(id='estimated-size', type='number', placeholder='Estimated Size (cm)', className="form-control mb-3"),
+            dcc.Input(id='estimated-age', type='number', min=0, placeholder='Estimated Age (years)', className="form-control mb-3"),
+            dcc.Input(id='estimated-weight', type='number', min=0, placeholder='Estimated Weight (kg)', className="form-control mb-3"),
+            dcc.Input(id='estimated-size', type='number', min=0, placeholder='Estimated Size (cm)', className="form-control mb-3"),
 
             html.Button('Submit', id='submit-animal-button', className="btn btn-secondary"),
-            html.Div(id='animal-output-message', className="mt-3"),
+            dcc.Location(id='url-add-animal'),
         ],
         className="container p-5",
         style={'max-width': '600px'}
@@ -49,7 +51,9 @@ def update_genus_options(pathname):
 
 # Callback-Funktion zum Speichern von Tierdaten
 @callback(
-    Output('animal-output-message', 'children'),
+    Output('alert-output-add-animal', 'children'),
+    Output('url-add-animal', 'href'),
+    Output('url-add-animal', 'refresh'),
     [Input('submit-animal-button', 'n_clicks')],
     [
         State('genus-dropdown', 'value'),
@@ -61,24 +65,24 @@ def update_genus_options(pathname):
     ]
 )
 def save_animal(n_clicks, genus_id, gender, visual_features, estimated_age, estimated_weight, estimated_size):
-    if n_clicks is None:
-        return None
-    
-    try:
+    if n_clicks is not None:
+        if genus_id is not None and gender is not None and visual_features is not None and estimated_age is not None and estimated_weight is not None and estimated_size is not None:
 
-        animal = Animal(
-            genus_id=genus_id,
-            gender=gender,
-            visual_features= visual_features,
-            estimated_age=estimated_age,
-            estimated_weight=estimated_weight,
-            estimated_size=estimated_size
-        )
-        session.add(animal)
-        session.commit()
+            animal = Animal(
+                genus_id=genus_id,
+                gender=gender,
+                visual_features= visual_features,
+                estimated_age=estimated_age,
+                estimated_weight=estimated_weight,
+                estimated_size=estimated_size
+            )
+            session.add(animal)
+            session.commit()
+            return '', '/view-animals', True
 
-
-        return f"Tier wurde erfolgreich hinzugefügt! ID: {animal.id}"
-
-    except Exception as e:
-        return f"Fehler beim Hinzufügen des Tiers: {e}"
+        else:
+            return dbc.Alert(
+                    f"Please specify all values!",
+                    dismissable=True,
+                    color="warning"), '', False
+    return '', '', False

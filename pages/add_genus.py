@@ -7,6 +7,7 @@ from models import Animal, Location, genus, base, Observation
 import os
 from datetime import datetime
 from models import my_session as session
+import dash_bootstrap_components as dbc
 
 dash.register_page(__name__)
 
@@ -16,12 +17,12 @@ style={'backgroundImage': f'url("https://s1.1zoom.me/big0/897/Canada_Winter_Moun
     children=[
     html.Div(
         [
-
+    html.Div(id="alert-output-add-genus"),
     html.H1("Add Genus", className="display-4 text-center mb-4",style={'font-size': '3em','font-weight': 'bold'}),
 
     dcc.Input(id='species-name', type='text', placeholder='Species Name', className="form-control mb-3"),
     html.Button('Add Genus', id='add-genus-button', className="btn btn-secondary"),
-    html.Div(id='genus-output-message', className="mt-3")
+    dcc.Location(id='url-add-genus')
     ],
     className="container p-5",
     style={'max-width': '600px'}
@@ -30,14 +31,22 @@ style={'backgroundImage': f'url("https://s1.1zoom.me/big0/897/Canada_Winter_Moun
 
 # Callback-Funktion für das Einreichen von Genus-Daten
 @callback(
-    Output('genus-output-message', 'children'),
+    Output('alert-output-add-genus', 'children'),
+    Output('url-add-genus', 'href'),
+    Output('url-add-genus', 'refresh'),
     [Input('add-genus-button', 'n_clicks')],
     [dash.dependencies.State('species-name', 'value')]
 )
-def add_genus(n_clicks, species_name):
+def safe_genus(n_clicks, species_name):
     if n_clicks is not None:
-        new_genus = genus(species_name=species_name)
-        session.add(new_genus)
-        session.commit()
-        return "Genus " + species_name + " added successfully."
-    return None
+        if species_name is not None:
+            new_genus = genus(species_name=species_name)
+            session.add(new_genus)
+            session.commit()
+            return '', '/view-genera', True
+        else:
+            return dbc.Alert(
+                f"Please enter the species name!",
+                dismissable=True,
+                color="warning"), '', False
+    return'', '', False
