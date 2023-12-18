@@ -83,10 +83,12 @@ def update_animal_graph_figure(value):
                 value = element[0]  # Nehme die Zahl aus dem Ursprungsarray
 
                 # Überprüfe, ob die Zahl innerhalb der Range liegt
-                if start <= value <= end:
+                if start <= value < end:
                     count_per_group[gruppen.index(group)] += 1
     except:
         []
+
+    print(gruppen)
 
     if len(gruppen) >= 1:
         string_array = []
@@ -96,9 +98,9 @@ def update_animal_graph_figure(value):
             else:
                 string_array.append(f"{start}-{end} years")
 
-        data_age_groups = {'X': string_array, 'Y': count_per_group}
+        data_age_groups = {'Age Group': string_array, 'Number': count_per_group}
         df_age_groups = pd.DataFrame(data_age_groups)
-        fig_age_groups = px.bar(df_age_groups, x='X', y='Y')
+        fig_age_groups = px.bar(df_age_groups, x='Age Group', y='Number')
 
         fig_age_groups.update_layout(
             title=dict(
@@ -108,7 +110,7 @@ def update_animal_graph_figure(value):
                 xanchor='center',
                 yanchor='top',
             ),
-            xaxis_title='Age-Groups',
+            xaxis_title='Age Groups',
             yaxis_title='Number',
             plot_bgcolor='rgba(0, 0, 0, 0)',
             paper_bgcolor='rgba(224, 238, 224, 1)',
@@ -119,9 +121,9 @@ def update_animal_graph_figure(value):
             marker_color='rgba(154,205,50,0.8)'
         )
     else:
-        data_age_groups = {'X': [0], 'Y': [0]}
+        data_age_groups = {'Age Group': [0], 'Number': [0]}
         df_age_groups = pd.DataFrame(data_age_groups)
-        fig_age_groups = px.bar(df_age_groups, x='X', y='Y')
+        fig_age_groups = px.bar(df_age_groups, x='Age Group', y='Number')
 
         fig_age_groups.update_layout(
             title=dict(
@@ -140,11 +142,13 @@ def update_animal_graph_figure(value):
     return text, fig_age_groups
 
 def gruppiere_zahlen(zahl):
+    if zahl == 0:
+        zahl = 1
     gerundete_zahl = ((zahl - 1) // 5 + 1) * 5
     # Berechne die Gruppengrenzen
     gruppen_grenzen = [i for i in range(1, gerundete_zahl + 1, gerundete_zahl // 5)]
     # Erstelle die Gruppen
-    gruppen = [(gruppen_grenzen[i],gruppen_grenzen[i + 1] - 1) for i in range(0, 4)]
+    gruppen = [(gruppen_grenzen[i]-1,gruppen_grenzen[i + 1] - 1) for i in range(0, 4)]
 
     # letzte Grenze manuell setzen
     letzteGrenze = int(((gerundete_zahl/5)*4)+1)

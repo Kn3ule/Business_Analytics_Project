@@ -23,6 +23,7 @@ def load_analysis(genus_id):
         genus_average_weight = []
         genus_average_size = []
         genus_deviation_age = []
+        genus_median_age = []
         genus_deviation_weight = []
         genus_deviation_size = []
         total_animals = []
@@ -87,6 +88,13 @@ def load_analysis(genus_id):
                     except:
                         genus_deviation_size.append(0)
 
+                for value in r_variables[8]:
+                    print("MedianAge: " + str(value))
+                    try:
+                        genus_median_age.append(int(value))
+                    except:
+                        genus_median_age.append(0)
+
                 for value in r_variables[1]:
                     print("TotalNumberAnalyse: " + str(value))
                     try:
@@ -94,7 +102,7 @@ def load_analysis(genus_id):
                     except:
                         total_animals.append(0)
 
-        return genus_names, number_animals_genus, genus_average_age, genus_average_weight, genus_average_size, genus_deviation_age, genus_deviation_weight, genus_deviation_size, total_animals
+        return genus_names, number_animals_genus, genus_average_age, genus_average_weight, genus_average_size, genus_deviation_age, genus_deviation_weight, genus_deviation_size, genus_median_age, total_animals
 
     return [], [], [], [], [], [], [], [], []
 
@@ -124,22 +132,25 @@ layout = html.Div([
 )
 def update_analysis_all(pathname):
     if pathname == '/analyze-data':
-        genus_names, genus_numbers, average_age, average_weight, average_size, deviation_age, deviation_weight, deviation_size, total_numbers = load_analysis("all")
+        genus_names, genus_numbers, average_age, average_weight, average_size, deviation_age, deviation_weight, deviation_size, median_age, total_numbers = load_analysis("all")
 
-        data_number = {'X': genus_names, 'Y': genus_numbers}
-        data_average_age = {'X': genus_names, 'Y': average_age}
-        data_average_weight = {'X': genus_names, 'Y': average_weight}
-        data_average_size = {'X': genus_names, 'Y': average_size}
+        data_number = {'Genus': genus_names, 'Number': genus_numbers}
+        data_average_median_age = {'Genus': genus_names, 'Average Age': average_age, 'Median Age': median_age}
+        data_average_weight = {'Genus': genus_names, 'Average Weight': average_weight}
+        data_average_size = {'Genus': genus_names, 'Average Size': average_size}
 
         df_number = pd.DataFrame(data_number)
-        df_average_age = pd.DataFrame(data_average_age)
+        df_average_median_age = pd.DataFrame(data_average_median_age)
+        # Melt the DataFrame to have a single 'Age Type' column (Average Age, Median Age)
+        df_average_median_age = pd.melt(df_average_median_age, id_vars='Genus', var_name='Age Type', value_name='Age')
         df_average_weight = pd.DataFrame(data_average_weight)
         df_average_size = pd.DataFrame(data_average_size)
 
-        fig_number = px.bar(df_number, x='X', y='Y')
-        fig_average_age = px.bar(df_average_age, x='X', y='Y')
-        fig_average_weight = px.bar(df_average_weight, x='X', y='Y')
-        fig_average_size = px.bar(df_average_size, x='X', y='Y')
+        fig_number = px.bar(df_number, x='Genus', y='Number')
+        fig_average_median_age = px.bar(df_average_median_age, x='Genus', y='Age', color='Age Type', barmode='group', color_discrete_map={'Average Age': 'rgba(154,205,50,0.8)', 'Median Age': 'orange'})
+
+        fig_average_weight = px.bar(df_average_weight, x='Genus', y='Average Weight')
+        fig_average_size = px.bar(df_average_size, x='Genus', y='Average Size')
 
         fig_number.update_layout(
             title=dict(
@@ -163,9 +174,9 @@ def update_analysis_all(pathname):
             marker_color = 'rgba(154,205,50,0.8)'
             )
 
-        fig_average_age.update_layout(
+        fig_average_median_age.update_layout(
             title=dict(
-                text="Average Age Genus",
+                text="Average and Median Age by Genus",
                 x=0.5,
                 y=0.95,
                 xanchor='center',
@@ -177,11 +188,6 @@ def update_analysis_all(pathname):
             plot_bgcolor='rgba(0, 0, 0, 0)',
             paper_bgcolor='rgba(224, 238, 224, 1)',
             yaxis=dict(showgrid=True, gridcolor='rgba(255, 255, 255, 0.5)'),
-        )
-
-        fig_average_age.update_traces(
-            # marker_line=dict(color='white', width=2), #Rand machen
-            marker_color='rgba(154,205,50,0.8)'
         )
 
         fig_average_weight.update_layout(
@@ -226,7 +232,7 @@ def update_analysis_all(pathname):
             marker_color='rgba(154,205,50,0.8)'
         )
 
-        for fig, lines_data in zip([fig_average_age, fig_average_weight, fig_average_size],
+        for fig, lines_data in zip([fig_average_median_age, fig_average_weight, fig_average_size],
                                    [deviation_age, deviation_weight, deviation_size]):
             legend_added = False
 
@@ -254,10 +260,14 @@ def update_analysis_all(pathname):
                             line=dict(color='red', width=2)
                         )
                     fig.add_trace(
-                        px.scatter(x=[genus_name], y=[y_value], opacity=0, color_discrete_sequence=['red']).data[0]
+                        px.scatter(pd.DataFrame({'Genus': genus_names, 'Standard Deviation': y_value}),
+                                   x='Genus',
+                                   y='Standard Deviation',
+                                   opacity=0,
+                                   color_discrete_sequence=['red']).data[0]
                     )
 
 
-        return fig_number,fig_average_age,fig_average_weight,fig_average_size
+        return fig_number,fig_average_median_age,fig_average_weight,fig_average_size
     else:
         return dash.no_update, dash.no_update, dash.no_update, dash.no_update
