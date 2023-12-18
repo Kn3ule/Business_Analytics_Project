@@ -115,14 +115,13 @@ layout = html.Div([
 ], style={'background-color': 'rgba(224, 238, 224)'})
 
 
+
 @callback(Output('number-animal-genus-bar-chart', 'figure'),
           Output('average-age-genus-bar-chart', 'figure'),
           Output('average-weight-genus-bar-chart', 'figure'),
           Output('average-size-genus-bar-chart', 'figure'),
               [Input('url', 'pathname')]
 )
-
-
 def update_analysis_all(pathname):
     if pathname == '/analyze-data':
         genus_names, genus_numbers, average_age, average_weight, average_size, deviation_age, deviation_weight, deviation_size, total_numbers = load_analysis("all")
@@ -229,16 +228,35 @@ def update_analysis_all(pathname):
 
         for fig, lines_data in zip([fig_average_age, fig_average_weight, fig_average_size],
                                    [deviation_age, deviation_weight, deviation_size]):
-            for i, y_value in enumerate(lines_data):
+            legend_added = False
+
+            for i, (y_value, genus_name) in enumerate(zip(lines_data, genus_names)):
                 if y_value != 0:
-                    fig.add_shape(
-                    type='line',
-                    x0=i - 0.4,
-                    x1=i + 0.4,
-                    y0=y_value,
-                    y1=y_value,
-                    line=dict(color='red', width=2),
+                    if not legend_added:
+                        fig.add_shape(
+                        type='line',
+                        x0=i - 0.4,
+                        x1=i + 0.4,
+                        y0=y_value,
+                        y1=y_value,
+                        line=dict(color='red', width=2),
+                        name='Standard Deviation',
+                        showlegend=True
+                        )
+                        legend_added = True
+                    else:
+                        fig.add_shape(
+                            type='line',
+                            x0=i - 0.4,
+                            x1=i + 0.4,
+                            y0=y_value,
+                            y1=y_value,
+                            line=dict(color='red', width=2)
+                        )
+                    fig.add_trace(
+                        px.scatter(x=[genus_name], y=[y_value], opacity=0, color_discrete_sequence=['red']).data[0]
                     )
+
 
         return fig_number,fig_average_age,fig_average_weight,fig_average_size
     else:
