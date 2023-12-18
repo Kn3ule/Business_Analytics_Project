@@ -36,7 +36,7 @@ def load_genus_specific_analysis(start, genus_id):
 layout = html.Div([
     html.Div([
         html.H1("Analyze Specific Data", style={'font-weight': 'bold'})
-    ], style={'text-align': 'center', 'padding-top': '50px'}),
+    ], style={'font-family':'Segoe UI', 'text-align': 'center', 'padding-top': '50px'}),
     html.Div([
         dcc.Dropdown(id='genus-dropdown-analysis', options=[], placeholder='Select Animal', value=[], clearable=False),
     ],style={'width': '10%','margin': 'auto','padding-top': '20px'}),
@@ -109,6 +109,7 @@ def update_animal_graph_figure(value):
                 y=0.95,
                 xanchor='center',
                 yanchor='top',
+                font_size=20,
             ),
             xaxis_title='Age Groups',
             yaxis_title='Number',
@@ -132,6 +133,7 @@ def update_animal_graph_figure(value):
                 y=0.55,
                 xanchor='center',
                 yanchor='top',
+                font_size=20,
             ),
             xaxis_title='Age-Groups',
             yaxis_title='Number',
