@@ -83,7 +83,7 @@ def update_animal_graph_figure(value):
                 value = element[0]  # Nehme die Zahl aus dem Ursprungsarray
 
                 # Überprüfe, ob die Zahl innerhalb der Range liegt
-                if start <= value < end:
+                if start <= value <= end:
                     count_per_group[gruppen.index(group)] += 1
     except:
         []
@@ -144,15 +144,15 @@ def update_animal_graph_figure(value):
     return text, fig_age_groups
 
 def gruppiere_zahlen(zahl):
-    if zahl == 0:
-        zahl = 1
+    #if zahl == 0:
+        #zahl = 1
     gerundete_zahl = ((zahl - 1) // 5 + 1) * 5
     # Berechne die Gruppengrenzen
     gruppen_grenzen = [i for i in range(1, gerundete_zahl + 1, gerundete_zahl // 5)]
     # Erstelle die Gruppen
-    gruppen = [(gruppen_grenzen[i]-1,gruppen_grenzen[i + 1] - 1) for i in range(0, 4)]
+    gruppen = [(gruppen_grenzen[i],gruppen_grenzen[i + 1] - 1) for i in range(0, 4)]
 
-    # letzte Grenze manuell setzen
+    print(len(gruppen))
     letzteGrenze = int(((gerundete_zahl/5)*4)+1)
     gruppen.append((letzteGrenze,int((letzteGrenze+(gerundete_zahl/5))-1)))
 

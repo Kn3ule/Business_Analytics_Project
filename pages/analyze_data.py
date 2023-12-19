@@ -188,6 +188,10 @@ def update_analysis_all(pathname):
                 font_size=20,
                 # font=dict(size=18, color='black', weight='bold')
             ),
+            legend=dict(
+                itemclick=False,  # Deaktiviert die Klickfunktionalität für die gesamte Legende
+                itemdoubleclick=False,
+            ),
             xaxis_title='Genus',
             yaxis_title='Average Age',
             plot_bgcolor='rgba(0, 0, 0, 0)',
@@ -204,6 +208,10 @@ def update_analysis_all(pathname):
                 yanchor='top',
                 font_size=20,
                 # font=dict(size=18, color='black', weight='bold')
+            ),
+            legend=dict(
+                itemclick=False,  # Deaktiviert die Klickfunktionalität für die gesamte Legende
+                itemdoubleclick=False,
             ),
             xaxis_title='Genus',
             yaxis_title='Weight in kg',
@@ -226,6 +234,10 @@ def update_analysis_all(pathname):
                 yanchor='top',
                 font_size=20,
                 # font=dict(size=18, color='black', weight='bold')
+            ),
+            legend=dict(
+                itemclick=False,  # Deaktiviert die Klickfunktionalität für die gesamte Legende
+                itemdoubleclick=False,
             ),
             xaxis_title='Genus',
             yaxis_title='Size in cm',
@@ -254,7 +266,7 @@ def update_analysis_all(pathname):
                         y1=y_value,
                         line=dict(color='red', width=2),
                         name='Standard Deviation',
-                        showlegend=True
+                        showlegend=True,
                         )
                         legend_added = True
                     else:
