@@ -144,13 +144,13 @@ def update_analysis_all(pathname):
 
         df_number = pd.DataFrame(data_number)
         df_average_median_age = pd.DataFrame(data_average_median_age)
-        # Melt the DataFrame to have a single 'Age Type' column (Average Age, Median Age)
-        df_average_median_age = pd.melt(df_average_median_age, id_vars='Genus', var_name='Age Type', value_name='Age')
+        # Melt the DataFrame to have a single 'Category' column (Average Age, Median Age)
+        df_average_median_age = pd.melt(df_average_median_age, id_vars='Genus', var_name='Category', value_name='Age')
         df_average_weight = pd.DataFrame(data_average_weight)
         df_average_size = pd.DataFrame(data_average_size)
 
         fig_number = px.bar(df_number, x='Genus', y='Number')
-        fig_average_median_age = px.bar(df_average_median_age, x='Genus', y='Age', color='Age Type', barmode='group', color_discrete_map={'Average Age': 'rgba(154,205,50,0.8)', 'Median Age': 'orange'})
+        fig_average_median_age = px.bar(df_average_median_age, x='Genus', y='Age', color='Category', barmode='group', color_discrete_map={'Average Age': 'rgba(154,205,50,0.8)', 'Median Age': 'orange'})
 
         fig_average_weight = px.bar(df_average_weight, x='Genus', y='Average Weight')
         fig_average_size = px.bar(df_average_size, x='Genus', y='Average Size')
@@ -279,13 +279,12 @@ def update_analysis_all(pathname):
                             line=dict(color='red', width=2)
                         )
                     fig.add_trace(
-                        px.scatter(pd.DataFrame({'Genus': genus_names, 'Standard Deviation': y_value}),
+                        px.scatter(pd.DataFrame({'Genus': [genus_name], 'Standard Deviation': [y_value]}),
                                    x='Genus',
                                    y='Standard Deviation',
                                    opacity=0,
                                    color_discrete_sequence=['red']).data[0]
                     )
-
 
         return fig_number,fig_average_median_age,fig_average_weight,fig_average_size
     else:

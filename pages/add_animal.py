@@ -28,7 +28,7 @@ layout = html.Div(
                          className="form-control mb-3"),
 
             dcc.Input(id='visual-features', type='text', placeholder='Visual Features', className="form-control mb-3"),
-            dcc.Input(id='estimated-age', type='number', min=0, placeholder='Estimated Age (years)', className="form-control mb-3"),
+            dcc.Input(id='estimated-age', type='number', min=1, step=1, placeholder='Estimated Age (years)', className="form-control mb-3"),
             dcc.Input(id='estimated-weight', type='number', min=0, placeholder='Estimated Weight (kg)', className="form-control mb-3"),
             dcc.Input(id='estimated-size', type='number', min=0, placeholder='Estimated Size (cm)', className="form-control mb-3"),
 
