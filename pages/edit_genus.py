@@ -50,12 +50,13 @@ def layout(id=None):
                      children=[
                 html.Div(style={'marginBottom': '20px'},
                          children=[
+                    html.Div(id="alert-output-edit-genus"),
                     html.Strong('Species Name:', style={'fontWeight': 'bold'}),
                     dcc.Input(
                         value=genus_data.species_name,
                         style={'marginLeft': '10px'},
                         disabled=False,  # Enable editing
-                        id = 'species-input'
+                        id = 'species-name-edit-input'
                     ),
                 ]),
             ]),
@@ -66,13 +67,13 @@ def layout(id=None):
             href='/view-genera'
         ),
         html.A(
-            html.Button('Delete Genus', id='delete-button', n_clicks=0,className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'})
+            html.Button('Delete Genus', id='delete-button-edit-genus', n_clicks=0,className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'})
         ),
         html.A(
-            html.Button('Save Changes', id='save-button', n_clicks=0, className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'}), href='/view-genera'),
+            html.Button('Save Changes', id='save-button-edit-genus', n_clicks=0, className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'})),
     ]),
     html.Div(id='output-container-genus', style={'marginTop': '20px'}),
-    dcc.Location(id='url-genus'),
+    dcc.Location(id='url-edit-genus'),
    ]),
 ])
 
@@ -83,25 +84,33 @@ def layout(id=None):
 
 # Callback to retrieve values on button click
 @callback(
-    Output('output-container-genus', 'children', allow_duplicate=True),
-    [Input('save-button', 'n_clicks')],
-    [State('species-name-input', 'value')],
+    Output('alert-output-edit-genus', 'children'),
+    Output('url-edit-genus', 'href'),
+    Output('url-edit-genus', 'refresh'),
+    [Input('save-button-edit-genus', 'n_clicks')],
+    [State('species-name-edit-input', 'value')],
     prevent_initial_call=True
 )
 def save_changes(n_clicks, species_name):
-    if n_clicks > 0:
-        genus_data.species_name = species_name
-        session.commit()
-    else:
-        return ''
+    if n_clicks is not None:
+        if species_name is not '':
+            genus_data.species_name = species_name
+            session.commit()
+            return '', '/view-genera', True
+        else:
+            return dbc.Alert(
+                f"Please enter the species name!",
+                dismissable=True,
+                color="warning"), '', False
+    return '', '', False
 
 
 # Callback to retrieve values on button click
 @callback(
-    Output('alert-output-genus', 'children', allow_duplicate=True),
-    Output('url-genus', 'href'),
-    Output('url-genus', 'refresh'),
-    [Input('delete-button', 'n_clicks')],
+    Output('alert-output-edit-genus', 'children', allow_duplicate=True),
+    Output('url-edit-genus', 'href', allow_duplicate=True),
+    Output('url-edit-genus', 'refresh', allow_duplicate=True),
+    [Input('delete-button-edit-genus', 'n_clicks')],
     prevent_initial_call=True
 )
 def delete_genus(n_clicks):

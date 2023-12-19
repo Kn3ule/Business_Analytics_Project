@@ -23,7 +23,6 @@ def layout(id=None):
         animal_data = session.query(Animal).filter_by(id=animal_id).all()[0]
         genus_data = session.query(genus).filter_by(id=animal_data.genus_id).all()[0]
 
-
         return html.Div(
             style={'position': 'fixed',
                    'top': '10',
@@ -39,6 +38,7 @@ def layout(id=None):
                                 'borderRadius': '10px', 'background-color': 'rgba(255, 255, 255, 0.9)',
                                 'margin': 'auto','position': 'absolute', 'top': '35%', 'left': '50%','transform': 'translate(-50%, -50%)'},
                         children=[
+            html.Div(id="alert-output-edit-animal"),
             html.H1('Edit Animal'),
 
             html.Div(
@@ -51,11 +51,11 @@ def layout(id=None):
                                 style={'marginBottom': '20px'},
                                 children=[
                                     html.Strong('Gender:', style={'fontWeight': 'bold'}),
-                                    dcc.Input(
+                                    dcc.Dropdown(
+                                        id='gender-edit-dropdown',
+                                        options=["Male", "Female", "Diverse"],
                                         value=animal_data.gender,
-                                        style={'marginLeft': '10px'},
-                                        disabled=False,
-                                        id='gender-input'
+                                        placeholder='Select Gender'
                                     ),
                                 ]),
                             html.Div(
@@ -66,7 +66,7 @@ def layout(id=None):
                                         value=animal_data.visual_features,
                                         style={'marginLeft': '10px'},
                                         disabled=False,
-                                        id='visual-features-input'
+                                        id='visual-features-edit-input'
                                     ),
                                 ]
                             ),
@@ -76,9 +76,10 @@ def layout(id=None):
                                     html.Strong('Estimated Age:', style={'fontWeight': 'bold'}),
                                     dcc.Input(
                                         value=animal_data.estimated_age,
+                                        type='number', min=1, step=1,
                                         style={'marginLeft': '10px'},
                                         disabled=False,
-                                        id='estimated-age-input'
+                                        id='estimated-age-edit-input'
                                     ),
                                 ]
                             ),
@@ -88,9 +89,10 @@ def layout(id=None):
                                     html.Strong('Estimated Weight:', style={'fontWeight': 'bold'}),
                                     dcc.Input(
                                         value=animal_data.estimated_weight,
+                                        type='number', min=0,
                                         style={'marginLeft': '10px'},
                                         disabled=False,
-                                        id='estimated-weight-input'
+                                        id='estimated-weight-edit-input'
                                     ),
                                 ]
                             ),
@@ -100,9 +102,10 @@ def layout(id=None):
                                     html.Strong('Estimated Size:', style={'fontWeight': 'bold'}),
                                     dcc.Input(
                                         value=animal_data.estimated_size,
+                                        type='number', min=0,
                                         style={'marginLeft': '10px'},
                                         disabled=False,
-                                        id='estimated-size-input'
+                                        id='estimated-size-edit-input'
                                     ),
                                 ]
                             ),
@@ -111,7 +114,7 @@ def layout(id=None):
                                 children=[
                                     html.Strong('Genus:', style={'fontWeight': 'bold'}),
                                     dcc.Dropdown(
-                                        id='edit-genus-dropdown',
+                                        id='genus-edit-dropdown',
                                         options=[],
                                         value=genus_data.id,
                                         placeholder='Select Genus'
@@ -128,17 +131,15 @@ def layout(id=None):
                         href='/view-animals'
                     ),
                     html.A(
-                        html.Button('Delete Animal', id='delete-button', n_clicks=0,className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'}),
-                        href='/view-animals'),
+                        html.Button('Delete Animal', id='delete-button-add-animal', n_clicks=0,className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'})),
                     html.A(
-                        html.Button('Save Changes', id='save-button', n_clicks=0,className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'}),
-                        href='/view-animals'
+                        html.Button('Save Changes', id='save-button-add-animal', n_clicks=0,className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'})
                     ),
                 ]
             ),
 
             html.Div(id='output-container-animal', style={'marginTop': '20px'}),
-            dcc.Location(id='url-animal'),
+            dcc.Location(id='url-edit-animal'),
         ]
         )
         ]
@@ -148,7 +149,7 @@ def layout(id=None):
 
 
 # Callback-Funktion zum Laden der neuesten Location-Optionen
-@callback(Output('edit-genus-dropdown', 'options'),
+@callback(Output('genus-edit-dropdown', 'options'),
               [Input('url', 'pathname')])
 def update_genus_options(pathname):
     if pathname == '/edit-animal/' + str(animal_id):
@@ -159,35 +160,45 @@ def update_genus_options(pathname):
 
 # Callback to retrieve values on button click
 @callback(
-    Output('output-container-animal', 'children', allow_duplicate=True),
-    [Input('save-button', 'n_clicks')],
-    [State('gender-input', 'value'),
-     State('visual-features-input', 'value'),
-     State('estimated-age-input', 'value'),
-     State('estimated-weight-input', 'value'),
-     State('estimated-size-input', 'value'),
-     State('edit-genus-dropdown', 'value')],
+    Output('alert-output-edit-animal', 'children'),
+    Output('url-edit-animal', 'href'),
+    Output('url-edit-animal', 'refresh'),
+    [Input('save-button-add-animal', 'n_clicks')],
+    [State('gender-edit-dropdown', 'value'),
+     State('visual-features-edit-input', 'value'),
+     State('estimated-age-edit-input', 'value'),
+     State('estimated-weight-edit-input', 'value'),
+     State('estimated-size-edit-input', 'value'),
+     State('genus-edit-dropdown', 'value')],
     prevent_initial_call=True
 )
-def save_changes(n_clicks, gender, visual_features, estimated_age, estimated_weight, estimated_size, genus):
-    if n_clicks > 0:
-        animal_data.gender = gender
-        animal_data.visual_features = visual_features
-        animal_data.estimated_age = estimated_age
-        animal_data.estimated_weight = estimated_weight
-        animal_data.estimated_size = estimated_size
-        animal_data.genus_id = genus
-        session.commit()
-    else:
-        return ''
+def save_changes(n_clicks, gender, visual_features, estimated_age, estimated_weight, estimated_size, genus_id):
+    if n_clicks is not None:
+        if genus_id is not None and gender is not None and visual_features != '' and estimated_age is not None and estimated_weight is not None and estimated_size is not None and genus_id is not None:
+            print("genus_id: " + str(genus_id) + "gender" + str(gender) + "visual_features" + str(visual_features) + "estimated_age" + str(estimated_age) + "estimated_weight" + str(estimated_weight) + "estimated_size" + str(estimated_size))
+            animal_data.gender = gender
+            animal_data.visual_features = visual_features
+            animal_data.estimated_age = estimated_age
+            animal_data.estimated_weight = estimated_weight
+            animal_data.estimated_size = estimated_size
+            animal_data.genus_id = genus_id
+            session.commit()
+            return '', '/view-animals', True
+
+        else:
+            return dbc.Alert(
+                f"Please specify all values!",
+                dismissable=True,
+                color="warning"), '', False
+    return '', '', False
 
 
 # Callback to retrieve values on button click
 @callback(
-    Output('alert-output-animal', 'children', allow_duplicate=True),
-    Output('url-animal', 'href'),
-    Output('url-animal', 'refresh'),
-    [Input('delete-button', 'n_clicks')],
+    Output('alert-output-edit-animal', 'children', allow_duplicate=True),
+    Output('url-edit-animal', 'href', allow_duplicate=True),
+    Output('url-edit-animal', 'refresh', allow_duplicate=True),
+    [Input('delete-button-add-animal', 'n_clicks')],
     prevent_initial_call=True
 )
 def delete_observation(n_clicks):

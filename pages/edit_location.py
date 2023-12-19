@@ -38,6 +38,7 @@ def layout(id=None):
                                 'margin': 'auto', 'position': 'absolute', 'top': '25%', 'left': '50%',
                                 'transform': 'translate(-50%, -50%)'},
                          children=[
+                            html.Div(id="alert-output-edit-location"),
                              html.H1('Edit Location'),
         html.Div(
             style={'flex': '50%'},
@@ -75,13 +76,13 @@ def layout(id=None):
             href='/view-locations'
         ),
         html.A(
-            html.Button('Delete Location', id='delete-button', n_clicks=0, className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'})
+            html.Button('Delete Location', id='delete-button-edit-location', n_clicks=0, className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'})
         ),
         html.A(
-            html.Button('Save Changes', id='save-button', n_clicks=0, className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'}), href='/view-locations'),
+            html.Button('Save Changes', id='save-button-edit-location', n_clicks=0, className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'})),
     ]),
     html.Div(id='output-container-location', style={'marginTop': '20px'}),
-    dcc.Location(id='url-location'),
+    dcc.Location(id='url-edit-location'),
 
     ]),
 ])
@@ -92,27 +93,36 @@ def layout(id=None):
 
 # Callback to retrieve values on button click
 @callback(
-    Output('output-container-location', 'children', allow_duplicate=True),
-    [Input('save-button', 'n_clicks')],
+    Output('alert-output-edit-location', 'children'),
+    Output('url-edit-location', 'href'),
+    Output('url-edit-location', 'refresh'),
+    [Input('save-button-edit-location', 'n_clicks')],
     [State('short-title-input', 'value'),
      State('description-input', 'value')],
     prevent_initial_call=True
 )
 def save_changes(n_clicks, short_title, description):
-    if n_clicks > 0:
-        location_data.short_title = short_title
-        location_data.description = description
-        session.commit()
-    else:
-        return ''
+    if n_clicks is not None:
+        if short_title is not '' and description is not '':
+            location_data.short_title = short_title
+            location_data.description = description
+            session.commit()
+            return '', '/view-locations', True
+
+        else:
+            return dbc.Alert(
+                f"Please specify all values!",
+                dismissable=True,
+                color="warning"), '', False
+    return '', '', False
 
 
 # Callback to retrieve values on button click
 @callback(
-    Output('alert-output-location', 'children', allow_duplicate=True),
-    Output('url-location', 'href'),
-    Output('url-location', 'refresh'),
-    [Input('delete-button', 'n_clicks')],
+    Output('alert-output-edit-location', 'children', allow_duplicate=True),
+    Output('url-edit-location', 'href', allow_duplicate=True),
+    Output('url-edit-location', 'refresh', allow_duplicate=True),
+    [Input('delete-button-edit-location', 'n_clicks')],
     prevent_initial_call=True
 )
 def delete_location(n_clicks):
