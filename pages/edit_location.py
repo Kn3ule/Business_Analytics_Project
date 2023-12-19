@@ -22,22 +22,42 @@ def layout(id=None):
     if location_number is not None:
         location_data = session.query(Location).filter_by(location_number=location_number).all()[0]
 
-        return html.Div(style={'maxWidth': '800px', 'margin': '0 auto', 'padding': '20px'}, children=[
-    html.Div(id="alert-output-location"),
-    html.H1('Edit Location'),
-    html.Div(style={'display': 'flex'}, children=[
-        html.Div(style={'flex': '50%', 'marginRight': '20px'}, children=[
-            html.Div(style={'display': 'flex', 'flexDirection': 'column', 'height': '100%'}, children=[
-                html.Div(style={'marginBottom': '20px'}, children=[
-                    html.Strong('Short Title:', style={'fontWeight': 'bold'}),
-                    dcc.Input(
+        return html.Div(
+            style={'position': 'fixed',
+                   'top': '10',
+                   'left': '0',
+                   'width': '100%',
+                   'height': '100vh',
+                   'z-index': '-1',
+                   'backgroundPosition': 'center',
+                   'backgroundSize': 'cover','backgroundImage': f'url("https://s1.1zoom.me/big0/849/Lake_Stones_Forests_Sunrises_and_sunsets_USA_600473_1280x853.jpg")'
+                   },
+            children=[
+                html.Div(style={'maxWidth': '800px', 'padding': '20px', 'border': '2px solid #ccc',
+                                'borderRadius': '10px', 'background-color': 'rgba(255, 255, 255, 0.9)',
+                                'margin': 'auto', 'position': 'absolute', 'top': '25%', 'left': '50%',
+                                'transform': 'translate(-50%, -50%)'},
+                         children=[
+                             html.H1('Edit Location'),
+        html.Div(
+            style={'flex': '50%'},
+            children=[
+            html.Div(
+                style={'display': 'flex', 'flexDirection': 'column', 'height': '100%'},
+                children=[
+                html.Div(
+                    style={'marginBottom': '20px'},
+                    children=[
+                        html.Strong('Short Title:', style={'fontWeight': 'bold'}),
+                        dcc.Input(
                         value=location_data.short_title,
                         style={'marginLeft': '10px'},
                         disabled=False,  # Enable editing
                         id = 'short-title-input'
                     ),
                 ]),
-                html.Div(style={'marginBottom': '20px'}, children=[
+                html.Div(style={'marginBottom': '20px'},
+                         children=[
                     html.Strong('Description:', style={'fontWeight': 'bold'}),
                     dcc.Input(
                         value=location_data.description,
@@ -48,20 +68,22 @@ def layout(id=None):
                 ]),
             ]),
         ]),
-    ]),
+
     html.Div(style={'display': 'flex', 'justifyContent': 'space-between', 'marginTop': '20px'}, children=[
         html.A(
-            html.Button('Cancel', id='cancel-button', n_clicks=0, style={'padding': '10px 20px'}),
+            html.Button('Cancel', id='cancel-button', n_clicks=0, className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'}),
             href='/view-locations'
         ),
         html.A(
-            html.Button('Delete Location', id='delete-button', n_clicks=0, style={'padding': '10px 20px'})
+            html.Button('Delete Location', id='delete-button', n_clicks=0, className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'})
         ),
         html.A(
-            html.Button('Save Changes', id='save-button', n_clicks=0, style={'padding': '10px 20px'}), href='/view-locations'),
+            html.Button('Save Changes', id='save-button', n_clicks=0, className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'}), href='/view-locations'),
     ]),
     html.Div(id='output-container-location', style={'marginTop': '20px'}),
     dcc.Location(id='url-location'),
+
+    ]),
 ])
     else:
         return html.Div("No location number was provided.")

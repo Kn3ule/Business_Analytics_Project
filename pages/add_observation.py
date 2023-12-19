@@ -49,7 +49,14 @@ def load_location_options():
     return location_options
 
 layout = html.Div(
-style={'backgroundImage': f'url("https://s1.1zoom.me/big0/292/346934-admin.jpg")', 'backgroundSize': 'cover','height': '100vh'},
+style={'position': 'fixed',
+                   'top': '10',
+                   'left': '0',
+                   'width': '100%',
+                   'height': '100vh',
+                   'z-index': '-1',
+                   'backgroundPosition': 'center',
+                   'backgroundImage': f'url("https://cdn.discordapp.com/attachments/1160992753094770847/1186682544930947102/delight-643744_1280.png?ex=6594233e&is=6581ae3e&hm=f7bfd245180365956b1d7963381460f29501485cbec98d24a8ca4e618df931b7&")', 'backgroundSize': 'cover',},
     children=[
     html.Div(
         [

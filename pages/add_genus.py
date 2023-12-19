@@ -13,7 +13,14 @@ dash.register_page(__name__)
 
 # Layout der Seite zum Hinzufügen von Genus
 layout = html.Div(
-style={'backgroundImage': f'url("https://s1.1zoom.me/big0/897/Canada_Winter_Mountains_Rivers_Lake_Scenery_River_558127_1280x959.jpg")', 'backgroundSize': 'cover','height': '100vh',},
+style={'position': 'fixed',
+                   'top': '10',
+                   'left': '0',
+                   'width': '100%',
+                   'height': '100vh',
+                   'z-index': '-1',
+                   'backgroundPosition': 'center',
+                   'backgroundImage': f'url("https://s1.1zoom.me/big0/935/418430-blackangel.jpg")', 'backgroundSize': 'cover'},
     children=[
     html.Div(
         [

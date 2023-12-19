@@ -25,24 +25,44 @@ def load_observations ():
             ORDER BY "End Time" DESC;""", engine)
 
 layout = html.Div(
-    style={'backgroundImage': f'url("https://s1.1zoom.me/b6869/14/Forests_Deer_Trees_Fog_557999_1920x1080.jpg")', 'backgroundSize': 'cover','height': '100vh'},
+    style={
+        'position': 'fixed',
+                'top': '10',
+                'left': '0',
+                'width': '100%',
+                'height': '100vh',
+                'z-index': '-1',
+                'backgroundPosition': 'center',
+                'backgroundSize': 'cover',
+                'backgroundImage': f'url("https://s1.1zoom.me/big0/391/Woodpecker_Birds_Bokeh_612016_1280x853.jpg")'
+    },
+
     children=[
-        html.H1("Recent Observations",className="display-4 text-center mb-4", style={'font-size': '3em','font-weight': 'bold'}),
-    html.Div(id='recent-observations-table')
+    html.H1("Recent Observations",className="display-4 text-center mb-4", style={'font-size': '3em','font-weight': 'bold', 'padding-top': '30px'}),
+    html.Div(id='recent-observations-table', style={'overflow-y': 'scroll', 'max-height': '600px', 'margin': 'auto', 'max-width': '800px'})
 
 ])
 
 @callback(Output('recent-observations-table', 'children'),
             [Input('url', 'pathname')])
+
 def update_recent_observations(pathname):
     if pathname == '/':
         return html.Table(
+
+            className="table",
+            style={'opacity': '0.9'},
             children=[
+
                 # Table Header
                 html.Thead(
                     html.Tr([
-                        html.Th(col, style={'padding': '12px', 'text-align': 'center', 'font-weight': 'bold', 'background-color': '#343a40', 'color': 'white'}) for col in load_observations().columns
-                    ] + [html.Th("Details", style={'padding': '12px', 'margin': '0', 'text-align': 'center', 'font-weight': 'bold', 'background-color': '#343a40', 'color': 'white'})])
+                        html.Th(col, style={'padding': '12px', 'text-align': 'center', 'font-weight': 'bold',
+                                            'background-color': '#343a40', 'color': 'white','position':'sticky','top': '0'})
+                                for col in load_observations().columns
+
+                    ] + [html.Th("Details", style={'padding': '12px', 'margin': '0', 'text-align': 'center', 'font-weight': 'bold',
+                                                   'background-color': '#343a40', 'color': 'white','position':'sticky','top': '0'})])
                 ),
                 # Table Body
                 html.Tbody([
@@ -53,8 +73,8 @@ def update_recent_observations(pathname):
                     ]) for row in load_observations().to_dict('records')
                 ])
             ],
-            className="table",
-            style={'margin': 'auto', 'max-width': '800px', 'overflow': 'hidden'},  # Zentrieren und begrenzte Breite für bessere Lesbarkeit
+
+
         )
-    return []
+
 

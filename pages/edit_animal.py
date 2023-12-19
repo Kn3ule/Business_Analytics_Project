@@ -23,78 +23,126 @@ def layout(id=None):
         animal_data = session.query(Animal).filter_by(id=animal_id).all()[0]
         genus_data = session.query(genus).filter_by(id=animal_data.genus_id).all()[0]
 
-        return html.Div(style={'maxWidth': '800px', 'margin': '0 auto', 'padding': '20px'}, children=[
-    html.Div(id="alert-output-animal"),
-    html.H1('Edit Animal'),  # Header for Observation Details
-    html.Div(style={'display': 'flex'}, children=[
-        html.Div(style={'flex': '50%', 'marginRight': '20px'}, children=[
-            html.Div(style={'display': 'flex', 'flexDirection': 'column', 'height': '100%'}, children=[
-                html.Div(style={'marginBottom': '20px'}, children=[
-                    html.Strong('Gender:', style={'fontWeight': 'bold'}),
-                    dcc.Input(
-                        value=animal_data.gender,
-                        style={'marginLeft': '10px'},
-                        disabled=False,  # Enable editing
-                        id = 'gender-input'
-                    ),
+
+        return html.Div(
+            style={'position': 'fixed',
+                   'top': '10',
+                   'left': '0',
+                   'width': '100%',
+                   'height': '100vh',
+                   'z-index': '-1',
+                   'backgroundPosition': 'center',
+                   'backgroundSize': 'cover','backgroundImage': f'url("https://s1.1zoom.me/big0/131/Falcon_Birds_Closeup_falco_tinnunculus_Branches_614759_1280x853.jpg")'
+                   },
+            children=[
+                html.Div(style={'maxWidth': '800px', 'padding': '20px', 'border': '2px solid #ccc',
+                                'borderRadius': '10px', 'background-color': 'rgba(255, 255, 255, 0.9)',
+                                'margin': 'auto','position': 'absolute', 'top': '35%', 'left': '50%','transform': 'translate(-50%, -50%)'},
+                        children=[
+            html.H1('Edit Animal'),
+
+            html.Div(
+                style={'display': 'flex'},
+                children=[
+                    html.Div(
+                        style={'display': 'flex', 'flexDirection': 'column', 'height': '100%'},
+                        children=[
+                            html.Div(
+                                style={'marginBottom': '20px'},
+                                children=[
+                                    html.Strong('Gender:', style={'fontWeight': 'bold'}),
+                                    dcc.Input(
+                                        value=animal_data.gender,
+                                        style={'marginLeft': '10px'},
+                                        disabled=False,
+                                        id='gender-input'
+                                    ),
+                                ]),
+                            html.Div(
+                                style={'marginBottom': '20px'},
+                                children=[
+                                    html.Strong('Visual Features:', style={'fontWeight': 'bold'}),
+                                    dcc.Input(
+                                        value=animal_data.visual_features,
+                                        style={'marginLeft': '10px'},
+                                        disabled=False,
+                                        id='visual-features-input'
+                                    ),
+                                ]
+                            ),
+                            html.Div(
+                                style={'marginBottom': '20px'},
+                                children=[
+                                    html.Strong('Estimated Age:', style={'fontWeight': 'bold'}),
+                                    dcc.Input(
+                                        value=animal_data.estimated_age,
+                                        style={'marginLeft': '10px'},
+                                        disabled=False,
+                                        id='estimated-age-input'
+                                    ),
+                                ]
+                            ),
+                            html.Div(
+                                style={'marginBottom': '20px'},
+                                children=[
+                                    html.Strong('Estimated Weight:', style={'fontWeight': 'bold'}),
+                                    dcc.Input(
+                                        value=animal_data.estimated_weight,
+                                        style={'marginLeft': '10px'},
+                                        disabled=False,
+                                        id='estimated-weight-input'
+                                    ),
+                                ]
+                            ),
+                            html.Div(
+                                style={'marginBottom': '20px'},
+                                children=[
+                                    html.Strong('Estimated Size:', style={'fontWeight': 'bold'}),
+                                    dcc.Input(
+                                        value=animal_data.estimated_size,
+                                        style={'marginLeft': '10px'},
+                                        disabled=False,
+                                        id='estimated-size-input'
+                                    ),
+                                ]
+                            ),
+                            html.Div(
+                                style={'marginBottom': '20px'},
+                                children=[
+                                    html.Strong('Genus:', style={'fontWeight': 'bold'}),
+                                    dcc.Dropdown(
+                                        id='edit-genus-dropdown',
+                                        options=[],
+                                        value=genus_data.id,
+                                        placeholder='Select Genus'
+                                    ),
+                                ]),
+                        ]),
                 ]),
-                html.Div(style={'marginBottom': '20px'}, children=[
-                    html.Strong('Visual Features:', style={'fontWeight': 'bold'}),
-                    dcc.Input(
-                        value=animal_data.visual_features,
-                        style={'marginLeft': '10px'},
-                        disabled=False,  # Enable editing
-                        id = 'visual-features-input'
+
+            html.Div(
+                style={'display': 'flex', 'justifyContent': 'space-between', 'margintop': '20px'},
+                children=[
+                    html.A(
+                        html.Button('Cancel', id='cancel-button', n_clicks=0,className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'}),
+                        href='/view-animals'
                     ),
-                ]),
-                html.Div(style={'marginBottom': '20px'}, children=[
-                    html.Strong('Estimated Age:', style={'fontWeight': 'bold'}),
-                    dcc.Input(
-                        value=animal_data.estimated_age,
-                        style={'marginLeft': '10px'},
-                        disabled=False,  # Enable editing
-                        id='estimated-age-input'
+                    html.A(
+                        html.Button('Delete Animal', id='delete-button', n_clicks=0,className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'}),
+                        href='/view-animals'),
+                    html.A(
+                        html.Button('Save Changes', id='save-button', n_clicks=0,className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'}),
+                        href='/view-animals'
                     ),
-                ]),
-                html.Div(style={'marginBottom': '20px'}, children=[
-                    html.Strong('Estimated Weight:', style={'fontWeight': 'bold'}),
-                    dcc.Input(
-                        value=animal_data.estimated_weight,
-                        style={'marginLeft': '10px'},
-                        disabled=False,  # Enable editing
-                        id='estimated-weight-input'
-                    ),
-                ]),
-                html.Div(style={'marginBottom': '20px'}, children=[
-                    html.Strong('Estimated Size:', style={'fontWeight': 'bold'}),
-                    dcc.Input(
-                        value=animal_data.estimated_size,
-                        style={'marginLeft': '10px'},
-                        disabled=False,  # Enable editing
-                        id='estimated-size-input'
-                    ),
-                ]),
-                html.Div(style={'marginBottom': '20px'}, children=[
-                    html.Strong('Genus:', style={'fontWeight': 'bold'}),
-                    dcc.Dropdown(id='edit-genus-dropdown', options=[], value= genus_data.id, placeholder='Select Genus'),
-                ])
-            ]),
-        ]),
-    ]),
-    html.Div(style={'display': 'flex', 'justifyContent': 'space-between', 'marginTop': '20px'}, children=[
-        html.A(
-            html.Button('Cancel', id='cancel-button', n_clicks=0, style={'padding': '10px 20px'}),
-            href='/view-animals'
-        ),
-        html.A(
-            html.Button('Delete Animal', id='delete-button', n_clicks=0, style={'padding': '10px 20px'})
-        ),
-        html.A(
-            html.Button('Save Changes', id='save-button', n_clicks=0, style={'padding': '10px 20px'}), href='/view-animals'),
-    ]),
-    html.Div(id='output-container-animal', style={'marginTop': '20px'}),
-    dcc.Location(id='url-animal'),
-])
+                ]
+            ),
+
+            html.Div(id='output-container-animal', style={'marginTop': '20px'}),
+            dcc.Location(id='url-animal'),
+        ]
+        )
+        ]
+        )
     else:
         return html.Div("No animal ID was provided.")
 

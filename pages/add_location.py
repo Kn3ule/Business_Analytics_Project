@@ -13,7 +13,14 @@ dash.register_page(__name__)
 
 # Layout der Seite zum Hinzufügen von Location
 layout = html.Div(
-style={'backgroundImage': f'url("https://s1.1zoom.me/big0/490/Finland_Parks_Forests_Rivers_Oulanka_National_Park_614746_1280x720.jpg")', 'backgroundSize': 'cover','height': '100vh'},
+style={'position': 'fixed',
+                   'top': '10',
+                   'left': '0',
+                   'width': '100%',
+                   'height': '100vh',
+                   'z-index': '-1',
+                   'backgroundPosition': 'center',
+                   'backgroundImage': f'url("https://s1.1zoom.me/big0/490/Finland_Parks_Forests_Rivers_Oulanka_National_Park_614746_1280x720.jpg")', 'backgroundSize': 'cover'},
     children=[
     html.Div(
         [

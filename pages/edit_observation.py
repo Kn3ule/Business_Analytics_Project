@@ -24,66 +24,137 @@ def layout(id=None):
         location_data = session.query(Location).filter_by(location_number=observation_data.location_id).all()[0]
 
         return html.Div(
-            style={'backgroundImage': f'url("https://s1.1zoom.me/big0/945/Forests_Stones_Wolves_498359.jpg")', 'backgroundSize': 'cover',
-                   'height': '100vh', 'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'},
+            style={'position': 'fixed',
+                   'top': '10',
+                   'left': '0',
+                   'width': '100%',
+                   'height': '100vh',
+                   'z-index': '-1',
+                   'backgroundPosition': 'center',
+                   'backgroundSize': 'cover','backgroundImage': f'url("https://s1.1zoom.me/big0/945/Forests_Stones_Wolves_498359.jpg")', 'backgroundSize': 'cover',
+                   },
             children=[
                 html.Div(style={'maxWidth': '800px', 'padding': '20px', 'border': '2px solid #ccc',
-                                'borderRadius': '10px', 'background-color': 'rgba(255, 255, 255, 0.9)',
-                                'marginTop': '50px'},
+                                'borderRadius': '10px', 'background-color': 'rgba(255, 255, 255, 0.9)','margin': 'auto',
+                                'position': 'absolute', 'top': '40%','left': '50%', 'transform': 'translate(-50%, -50%)'},
                          children=[
-    html.H1('Edit Observation'),  # Header for Observation Details
-    html.Div(style={'display': 'flex'}, children=[
-        html.Div(style={'flex': '50%', 'marginRight': '20px'}, children=[
-            html.H4('Time'),  # Moved Observation Details section within a div
-            html.Div(style={'display': 'flex', 'flexDirection': 'column', 'height': '100%'}, children=[
-                html.Div(style={'marginBottom': '20px'}, children=[
-                    html.Strong('Start Time:', style={'fontWeight': 'bold'}),
-                    dcc.Input(
-                        value=observation_data.start_time,
-                        style={'marginLeft': '10px'},
-                        disabled=False,  # Enable editing
-                        id = 'start-time-input'
-                    ),
-                ]),
-                html.Div(style={'marginBottom': '20px'}, children=[
-                    html.Strong('End Time:', style={'fontWeight': 'bold'}),
-                    dcc.Input(
-                        value=observation_data.end_time,
-                        style={'marginLeft': '10px'},
-                        disabled=False,  # Enable editing
-                        id = 'end-time-input'
-                    ),
-                ]),
-                html.H4('Location'),
-                html.Div(style={'marginBottom': '20px'}, children=[
-                    html.Strong('Location:', style={'fontWeight': 'bold'}),
-                    dcc.Dropdown(id='edit-location-dropdown', options=[], value= location_data.location_number, placeholder='Select Location'),
-                ])
-            ]),
-        ]),
-        html.Div(style={'flex': '50%'}, children=[
-            html.H4('Observed Animal'),  # Header for Observed Animal Details
-            html.Div(style={'marginBottom': '20px'}, children=[
-                html.Strong('Animal:', style={'fontWeight': 'bold'}),
-                dcc.Dropdown(id='edit-animal-dropdown', options=[], value= animal_data.id, placeholder='Select Animal'),
-            ]),
-        ]),
-    ]),
-    html.Div(style={'display': 'flex', 'justifyContent': 'space-between', 'marginTop': '20px'}, children=[
-        html.A(
-            html.Button('Cancel', id='cancel-button', n_clicks=0, style={'padding': '10px 20px'}),
-            href='/view-observation/' + str(observation_id)
-        ),
-        html.A(
-            html.Button('Delete Observation', id='delete-button', n_clicks=0, style={'padding': '10px 20px'}),
-            href='/'
-        ),
-        html.A(
-            html.Button('Save Changes', id='save-button', n_clicks=0, style={'padding': '10px 20px'}), href='/view-observation/' + str(observation_id)),
-    ]),
-    html.Div(id='output-container', style={'marginTop': '20px'})
-])
-])
+                             html.H1('Edit Observation'),
+                             html.Div(
+                                 style={'display': 'flex'},
+                                 children=[
+                                     html.Div(
+                                    style={'flex': '50%', 'marginRight': '20px'},
+                                    children=[
+                                        html.H4('Date'),
+                                        html.Div(
+                                            style={'display': 'flex', 'flexDirection': 'column', 'height': '100%'},
+                                            children=[
+                                                html.Div(
+                                                    style={'marginBottom': '20px'},
+                                                    children=[
+                                                        html.Strong('Start Date:', style={'fontWeight': 'bold'}),
+                                                        dcc.Input(
+                                                            value=observation_data.start_time.date(),
+                                                            style={'marginLeft': '10px'},
+                                                            disabled=False,  # Enable editing
+                                                            id='start-date-input'
+                                                        ),
+                                                    ]
+                                                ),
+                                                html.Div(
+                                                    style={'marginBottom': '20px'},
+                                                    children=[
+                                                        html.Strong('End Date:', style={'fontWeight': 'bold'}),
+                                                        dcc.Input(
+                                                            value=observation_data.end_time.date(),
+                                                            style={'marginLeft': '10px'},
+                                                            disabled=False,  # Enable editing
+                                                            id='end-date-input'
+                                                        ),
+                                                    ]
+                                                ),
+                                                html.H4('Time'),
+                                                html.Div(
+                                                    style={'marginBottom': '20px'},
+                                                    children=[
+                                                        html.Strong('Start Time:', style={'fontWeight': 'bold'}),
+                                                        dcc.Input(
+                                                            value=observation_data.start_time.time(),
+                                                            style={'marginLeft': '10px'},
+                                                            disabled=False,  # Enable editing
+                                                            id='start-time-input'
+                                                        ),
+                                                    ]
+                                                ),
+                                                html.Div(
+                                                    style={'marginBottom': '20px'},
+                                                    children=[
+                                                        html.Strong('End Time:', style={'fontWeight': 'bold'}),
+                                                        dcc.Input(
+                                                            value=observation_data.end_time.time(),
+                                                            style={'marginLeft': '10px'},
+                                                            disabled=False,  # Enable editing
+                                                            id='end-time-input'
+                                                        ),
+                                                    ]),
+                                            ]),
+                                    ]),
+                                     html.Div(
+                                         style={'flex': '50%'},
+                                         children=[
+                                             html.H4('Observed Animal'),  # Header for Observed Animal Details
+                                             html.Div(
+                                                 style={'marginBottom': '20px'},
+                                                 children=[
+                                                     html.Strong('Animal:', style={'fontWeight': 'bold'}),
+                                                     dcc.Dropdown(
+                                                         id='edit-animal-dropdown',
+                                                         options=[],
+                                                         value=animal_data.id,
+                                                         placeholder='Select Animal'
+                                                     ),
+                                                 ]
+                                             ),
+                                             html.H4('Location'),  # Moved "Location" here
+                                             html.Div(
+                                                 style={'marginBottom': '20px'},
+                                                 children=[
+                                                     html.Strong('Location:', style={'fontWeight': 'bold'}),
+                                                     dcc.Dropdown(
+                                                         id='edit-location-dropdown',
+                                                         options=[],
+                                                         value=location_data.location_number,
+                                                         placeholder='Select Location'
+                                                     ),
+                                                 ]),
+                                         ]),
+                                 ]),
+
+                             html.Div(
+                                 style={'display': 'flex', 'justifyContent': 'space-between', 'marginTop': '20px'},
+                                 children=[
+                                     html.A(
+                                         html.Button('Cancel', id='cancel-button', n_clicks=0,
+                                                     className='btn btn-secondary',
+                                                     style={'padding': '10px 20px'}),
+                                         href='/view-observation/' + str(observation_id)
+                                     ),
+                                     html.A(
+                                         html.Button('Delete Observation', id='delete-button', n_clicks=0,
+                                                     className='btn btn-secondary', style={'padding': '10px 20px'}),
+                                         href='/'
+                                     ),
+                                     html.A(
+                                         html.Button('Save Changes', id='save-button', n_clicks=0,
+                                                     className='btn btn-secondary',
+                                                     style={'padding': '10px 20px'}),
+                                         href='/view-observation/' + str(observation_id)),
+                                 ]
+                             ),
+                         ]
+                         )
+            ]
+        )
     else:
         return html.Div("No observation ID was provided.")
 

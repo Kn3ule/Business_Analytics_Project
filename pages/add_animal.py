@@ -16,7 +16,14 @@ def load_genus_options():
     return [{'label': g.species_name, 'value': g.id} for g in session.query(genus).all()]
 
 layout = html.Div(
-    style={'backgroundImage': f'url("https://s1.1zoom.me/big0/479/Rivers_Forests_Mountains_American_bison_Grass_516890_1280x821.jpg")', 'backgroundSize': 'cover','height': '100vh'},
+    style={'position': 'fixed',
+                   'top': '10',
+                   'left': '0',
+                   'width': '100%',
+                   'height': '100vh',
+                   'z-index': '-1',
+                   'backgroundPosition': 'center',
+                   'backgroundImage': f'url("https://s1.1zoom.me/big0/207/Closeup_Macro_Ladybugs_Insects_Bokeh_Grass_613581_1280x858.jpg")', 'backgroundSize': 'cover'},
     children=[
         html.Div(
         [
