@@ -91,7 +91,10 @@ def load_analysis(genus_id):
                 for value in r_variables[8]:
                     print("MedianAge: " + str(value))
                     try:
-                        genus_median_age.append(int(value))
+                        if str(value) != "NA_integer_":
+                            genus_median_age.append(int(value))
+                        else:
+                            genus_median_age.append(0)
                     except:
                         genus_median_age.append(0)
 
