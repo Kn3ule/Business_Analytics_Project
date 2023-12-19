@@ -12,6 +12,7 @@ from rpy2.robjects import conversion, default_converter
 from rpy2 import robjects as robjects
 import plotly.express as px
 import pandas as pd
+import math
 
 dash.register_page(__name__)
 
@@ -143,6 +144,7 @@ def update_animal_graph_figure(value):
         )
     return text, fig_age_groups
 
+'''
 def gruppiere_zahlen(zahl):
     #if zahl == 0:
         #zahl = 1
@@ -156,5 +158,21 @@ def gruppiere_zahlen(zahl):
     letzteGrenze = int(((gerundete_zahl/5)*4)+1)
     gruppen.append((letzteGrenze,int((letzteGrenze+(gerundete_zahl/5))-1)))
 
-    return gruppen
+    return gruppen '''
+
+def gruppiere_zahlen(max_age):
+    #if zahl == 0:
+        #zahl = 1
+    
+    span = math.ceil(max_age / 5)
+    # Erstellen der Altersgruppen mit exklusiver Obergrenze
+    age_groups = [(i, min(i + span, max_age)) for i in range(0, max_age, span)]
+    print(age_groups)
+
+    # Anpassen der Gruppen, um Überschneidungen zu vermeiden
+    # Die untere Grenze jeder Gruppe (außer der ersten) wird um 1 erhöht
+    adjusted_age_groups = [age_groups[0]] + [(age_groups[i][0] + 1, age_groups[i][1]) for i in range(1, 5)]
+    
+
+    return adjusted_age_groups
 
