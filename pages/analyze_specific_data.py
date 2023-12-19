@@ -64,9 +64,10 @@ def update_animal_graph_figure(value):
 
     total_animals, specific_animals, max_age_value, percentage_of_animal = load_genus_specific_analysis("specific",value)
 
+    split_percentage_result = str(percentage_of_animal).split()[1]
+    result_percentage_without_brackets = split_percentage_result.strip('[]')
     specific_genus = session.query(genus).filter_by(id=value).first()
-    percentage = round((specific_animals[0]/total_animals[0])*100,2) #R-Skript-Funktion bereits vorhanden
-    text=f'Information: {percentage}% of the animals in the database have the genus: {specific_genus.species_name}'
+    text=f'Information: {result_percentage_without_brackets}% of the animals in the database have the genus: {specific_genus.species_name}'
 
     all_ages_genus = session.query(Animal.estimated_age).filter_by(genus_id=value).all()
     gruppen = []
@@ -101,6 +102,8 @@ def update_animal_graph_figure(value):
 
         data_age_groups = {'Age Group': string_array, 'Number': count_per_group}
         df_age_groups = pd.DataFrame(data_age_groups)
+        print(df_age_groups)
+        #print("test")
         fig_age_groups = px.bar(df_age_groups, x='Age Group', y='Number')
 
         fig_age_groups.update_layout(
@@ -144,7 +147,7 @@ def update_animal_graph_figure(value):
         )
     return text, fig_age_groups
 
-'''
+
 def gruppiere_zahlen(zahl):
     #if zahl == 0:
         #zahl = 1
@@ -158,8 +161,8 @@ def gruppiere_zahlen(zahl):
     letzteGrenze = int(((gerundete_zahl/5)*4)+1)
     gruppen.append((letzteGrenze,int((letzteGrenze+(gerundete_zahl/5))-1)))
 
-    return gruppen '''
-
+    return gruppen 
+'''
 def gruppiere_zahlen(max_age):
     #if zahl == 0:
         #zahl = 1
@@ -175,4 +178,4 @@ def gruppiere_zahlen(max_age):
     
 
     return adjusted_age_groups
-
+'''
