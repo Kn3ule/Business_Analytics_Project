@@ -1,14 +1,13 @@
 import dash
 import pandas as pd
 from dash import html, dcc, callback
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 from rpy2 import robjects as robjects
 
-from models import Animal, Location, genus, base, Observation
+from models import genus
 from models import my_session as session
 from rpy2.robjects import conversion, default_converter
 import plotly.express as px
-import plotly.graph_objects as go
 
 dash.register_page(__name__)
 

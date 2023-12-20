@@ -1,7 +1,7 @@
 import dash
 from dash import html, dcc, callback
-from dash.dependencies import Input, Output, State
-from models import Animal, Location, genus, base, Observation
+from dash.dependencies import Input, Output
+from models import Animal, genus
 from models import my_session as session
 from rpy2.robjects import conversion, default_converter
 from rpy2 import robjects as robjects
