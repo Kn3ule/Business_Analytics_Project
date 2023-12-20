@@ -11,7 +11,8 @@ def load_genera():
             genus.id AS "ID",
             genus.species_name AS "Species Name"
             FROM
-                genus;""", engine)
+                genus
+            ORDER BY genus.id;""", engine)
 
 # show genera in a table
 layout = html.Div(

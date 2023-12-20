@@ -13,7 +13,8 @@ def load_locations():
             short_title AS "Short Title",
             description AS "Description"
             FROM
-                locations;""", engine)
+                locations
+            ORDER BY location_number;""", engine)
 
 # Read the local image file and encode it to Base64
 with open("./images/island.jpg", "rb") as img_file:

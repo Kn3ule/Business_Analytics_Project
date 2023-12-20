@@ -18,7 +18,8 @@ def load_animals():
             FROM
                 animals
             JOIN
-                genus ON animals.genus_id = genus.id;""", engine)
+                genus ON animals.genus_id = genus.id
+            ORDER BY animals.id;""", engine)
 
 
 # show animals in a table
