@@ -11,7 +11,8 @@ conn = engine.connect()
 Session = sessionmaker()
 my_session = Session(bind=engine)
 
-
+#relationship table between Animal and Location
+#have exrta fields start time and end time
 class Observation(base):
     __tablename__ = 'observations'
 
@@ -30,7 +31,7 @@ class Observation(base):
         self.start_time = start_time
         self.end_time = end_time
 
-
+#Animal table to store the animals for specific genus
 class Animal(base):
     __tablename__= 'animals'
 
@@ -52,6 +53,7 @@ class Animal(base):
         self.estimated_weight = estimated_weight
         self.estimated_size = estimated_size
 
+#location table to store the locations of the hunters seats
 class Location(base):
     __tablename__='locations'
 
@@ -65,6 +67,7 @@ class Location(base):
         self.short_title = short_title
         self.description = description
 
+#table to store the different genera
 class genus(base):
     __tablename__='genus'
 
