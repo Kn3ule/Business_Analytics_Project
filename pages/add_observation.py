@@ -14,7 +14,7 @@ dash.register_page(__name__)
 global genus_options_animal
 genus_options_animal = [genus.id for genus in session.query(genus).all()]
 
-#Funktion zum Laden der Animal Optionen
+#function to load the genus options
 #with new session because of concurrent call
 def load_genus_options():
     new_session = Session(bind=engine)
@@ -48,6 +48,8 @@ def load_location_options():
         new_session.close()
     return location_options
 
+# add the layout of observation
+# add a background picture
 layout = html.Div(
 style={'position': 'fixed',
                    'top': '10',
@@ -57,6 +59,8 @@ style={'position': 'fixed',
                    'z-index': '-1',
                    'backgroundPosition': 'center',
                    'backgroundImage': f'url("https://cdn.discordapp.com/attachments/1160992753094770847/1186682544930947102/delight-643744_1280.png?ex=6594233e&is=6581ae3e&hm=f7bfd245180365956b1d7963381460f29501485cbec98d24a8ca4e618df931b7&")', 'backgroundSize': 'cover',},
+
+# create the table to add an observation through several attributes
     children=[
     html.Div(
         [

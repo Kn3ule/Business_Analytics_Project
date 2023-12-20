@@ -11,10 +11,13 @@ import dash_bootstrap_components as dbc
 
 dash.register_page(__name__)
 
-# Funktion zum Laden der neuesten Genus-Optionen
+
+# Function to load the newest genus options
 def load_genus_options():
     return [{'label': g.species_name, 'value': g.id} for g in session.query(genus).all()]
 
+# add the layout of animal
+# add a background picture
 layout = html.Div(
     style={'position': 'fixed',
                    'top': '10',
@@ -24,6 +27,8 @@ layout = html.Div(
                    'z-index': '-1',
                    'backgroundPosition': 'center',
                    'backgroundImage': f'url("https://s1.1zoom.me/big0/207/Closeup_Macro_Ladybugs_Insects_Bokeh_Grass_613581_1280x858.jpg")', 'backgroundSize': 'cover'},
+    
+# create the table to add an animal with several attributes    
     children=[
         html.Div(
         [

@@ -11,7 +11,8 @@ import dash_bootstrap_components as dbc
 
 dash.register_page(__name__)
 
-# Layout der Seite zum Hinzufügen von Location
+# add the layout of the location
+# add a background picture
 layout = html.Div(
 style={'position': 'fixed',
                    'top': '10',
@@ -20,7 +21,10 @@ style={'position': 'fixed',
                    'height': '100vh',
                    'z-index': '-1',
                    'backgroundPosition': 'center',
-                   'backgroundImage': f'url("https://s1.1zoom.me/big0/490/Finland_Parks_Forests_Rivers_Oulanka_National_Park_614746_1280x720.jpg")', 'backgroundSize': 'cover'},
+                   'backgroundImage': f'url("https://s1.1zoom.me/big0/490/Finland_Parks_Forests_Rivers_Oulanka_National_Park_614746_1280x720.jpg")',
+                   'backgroundSize': 'cover'},
+
+# create the table to add a location
     children=[
     html.Div(
         [

@@ -11,7 +11,8 @@ import dash_bootstrap_components as dbc
 
 dash.register_page(__name__)
 
-# Layout der Seite zum Hinzufügen von Genus
+# add the layout of genus
+# add a background picture
 layout = html.Div(
 style={'position': 'fixed',
                    'top': '10',
@@ -21,6 +22,8 @@ style={'position': 'fixed',
                    'z-index': '-1',
                    'backgroundPosition': 'center',
                    'backgroundImage': f'url("https://s1.1zoom.me/big0/935/418430-blackangel.jpg")', 'backgroundSize': 'cover'},
+
+# create the table to add a genus
     children=[
     html.Div(
         [
