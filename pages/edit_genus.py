@@ -14,6 +14,7 @@ dash.register_page(__name__, path_template='/edit-genus/<id>')
 global genus_id
 global genus_data
 
+# set the layout for edit genus
 def layout(id=None):
     global genus_id
     global genus_data
@@ -24,6 +25,7 @@ def layout(id=None):
 #
 
         return html.Div(
+            # set a background picture
             style={'position': 'fixed',
                    'top': '10',
                    'left': '0',
@@ -34,16 +36,16 @@ def layout(id=None):
                    'backgroundSize': 'cover',
                    'backgroundImage': f'url("https://s1.1zoom.me/big0/549/Squirrels_Rodents_Bokeh_616888_1280x728.jpg")',
                    },
-
+            # create the table to edit genus
+            # create the container
             children=[
-
             html.Div(style={'maxWidth': '800px', 'padding': '20px', 'border': '2px solid #ccc',
                                 'borderRadius': '10px', 'background-color': 'rgba(255, 255, 255, 0.9)',
                                 'margin': 'auto','position': 'absolute', 'top': '20%', 'left': '50%','transform': 'translate(-50%, -50%)'},
                      children=[
 
     html.H1('Edit Genus'),
-
+    # create input field to edit genus
     html.Div(style={'display': 'flex'},
              children=[
              html.Div(style={'display': 'flex', 'flexDirection': 'column', 'height': '100%'},
@@ -61,6 +63,8 @@ def layout(id=None):
                 ]),
             ]),
             ]),
+
+    # create buttons Cancel Delete and Save                    # create buttons
     html.Div(style={'display': 'flex', 'justifyContent': 'space-between', 'marginTop': '20px'}, children=[
         html.A(
             html.Button('Cancel', id='cancel-button', n_clicks=0, className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'}),
@@ -72,7 +76,8 @@ def layout(id=None):
         html.A(
             html.Button('Save Changes', id='save-button-edit-genus', n_clicks=0, className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'})),
     ]),
-    html.Div(id='output-container-genus', style={'marginTop': '20px'}),
+    #display putput content
+    html.Div(id='output-container-genus'),
     dcc.Location(id='url-edit-genus'),
    ]),
 ])

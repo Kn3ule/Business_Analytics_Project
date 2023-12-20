@@ -13,6 +13,7 @@ dash.register_page(__name__, path_template='/edit-observation/<id>')
 global observation_id
 global observation_data
 
+# set the layout for edit genus
 def layout(id=None):
     global observation_id
     global observation_data
@@ -24,6 +25,7 @@ def layout(id=None):
         location_data = session.query(Location).filter_by(location_number=observation_data.location_id).all()[0]
 
         return html.Div(
+            # set a background picture
             style={'position': 'fixed',
                    'top': '10',
                    'left': '0',
@@ -33,13 +35,15 @@ def layout(id=None):
                    'backgroundPosition': 'center',
                    'backgroundSize': 'cover','backgroundImage': f'url("https://s1.1zoom.me/big0/945/Forests_Stones_Wolves_498359.jpg")', 'backgroundSize': 'cover',
                    },
+            # create the table to edit observation
+            # create the container
             children=[
                 html.Div(style={'maxWidth': '800px', 'padding': '20px', 'border': '2px solid #ccc',
                                 'borderRadius': '10px', 'background-color': 'rgba(255, 255, 255, 0.9)','margin': 'auto',
                                 'position': 'absolute', 'top': '40%','left': '50%', 'transform': 'translate(-50%, -50%)'},
                          children=[
-                             html.H1('Edit Observation'),
-                             html.Div(
+                            html.H1('Edit Observation'),
+                            html.Div(
                                  style={'display': 'flex'},
                                  children=[
                                      html.Div(
@@ -47,20 +51,23 @@ def layout(id=None):
                                     children=[
                                         html.H4('Date'),
                                         html.Div(
-                                            style={'display': 'flex', 'flexDirection': 'column', 'height': '100%'},
-                                            children=[
-                                                html.Div(
-                                                    style={'marginBottom': '20px'},
-                                                    children=[
-                                                        html.Strong('Start Date:', style={'fontWeight': 'bold'}),
-                                                        dcc.Input(
-                                                            value=observation_data.start_time.date(),
-                                                            style={'marginLeft': '10px'},
-                                                            disabled=False,  # Enable editing
-                                                            id='start-date-input'
+                                        style={'display': 'flex', 'flexDirection': 'column', 'height': '100%'},
+                                        children=[
+
+                                            # create input field to edit start date
+                                            html.Div(
+                                                style={'marginBottom': '20px'},
+                                                children=[
+                                                    html.Strong('Start Date:', style={'fontWeight': 'bold'}),
+                                                    dcc.Input(
+                                                        value=observation_data.start_time.date(),
+                                                        style={'marginLeft': '10px'},
+                                                        disabled=False,  # Enable editing
+                                                        id='start-date-input'
                                                         ),
                                                     ]
                                                 ),
+                                            # create input field to edit end date
                                                 html.Div(
                                                     style={'marginBottom': '20px'},
                                                     children=[
@@ -73,6 +80,7 @@ def layout(id=None):
                                                         ),
                                                     ]
                                                 ),
+                                                # create input field to edit start time
                                                 html.H4('Time'),
                                                 html.Div(
                                                     style={'marginBottom': '20px'},
@@ -86,6 +94,7 @@ def layout(id=None):
                                                         ),
                                                     ]
                                                 ),
+                                                # create input field to edit end date
                                                 html.Div(
                                                     style={'marginBottom': '20px'},
                                                     children=[
@@ -99,6 +108,7 @@ def layout(id=None):
                                                     ]),
                                             ]),
                                     ]),
+                                     # create dropdown to edit the animal
                                      html.Div(
                                          style={'flex': '50%'},
                                          children=[
@@ -115,7 +125,9 @@ def layout(id=None):
                                                      ),
                                                  ]
                                              ),
-                                             html.H4('Location'),  # Moved "Location" here
+
+                                             # create a dropdown to edit the location
+                                             html.H4('Location'),
                                              html.Div(
                                                  style={'marginBottom': '20px'},
                                                  children=[
@@ -130,6 +142,7 @@ def layout(id=None):
                                          ]),
                                  ]),
 
+                             # create buttons Cancel Delete and Save
                              html.Div(
                                  style={'display': 'flex', 'justifyContent': 'space-between', 'marginTop': '20px'},
                                  children=[

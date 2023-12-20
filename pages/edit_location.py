@@ -14,6 +14,7 @@ dash.register_page(__name__, path_template='/edit-location/<id>')
 global location_number
 global location_data
 
+# set the layout for edit location
 def layout(id=None):
     global location_number
     global location_data
@@ -23,6 +24,7 @@ def layout(id=None):
         location_data = session.query(Location).filter_by(location_number=location_number).all()[0]
 
         return html.Div(
+            # set a background picture
             style={'position': 'fixed',
                    'top': '10',
                    'left': '0',
@@ -32,14 +34,18 @@ def layout(id=None):
                    'backgroundPosition': 'center',
                    'backgroundSize': 'cover','backgroundImage': f'url("https://s1.1zoom.me/big0/849/Lake_Stones_Forests_Sunrises_and_sunsets_USA_600473_1280x853.jpg")'
                    },
+            # create the table to edit location
+            # create the container
             children=[
                 html.Div(style={'maxWidth': '800px', 'padding': '20px', 'border': '2px solid #ccc',
                                 'borderRadius': '10px', 'background-color': 'rgba(255, 255, 255, 0.9)',
                                 'margin': 'auto', 'position': 'absolute', 'top': '25%', 'left': '50%',
                                 'transform': 'translate(-50%, -50%)'},
-                         children=[
-                            html.Div(id="alert-output-edit-location"),
-                             html.H1('Edit Location'),
+        children=[
+                html.Div(id="alert-output-edit-location"),
+                html.H1('Edit Location'),
+
+        # create input field to edit location
         html.Div(
             style={'flex': '50%'},
             children=[
@@ -57,6 +63,7 @@ def layout(id=None):
                         id = 'short-title-input'
                     ),
                 ]),
+                    # create input field to edit description
                 html.Div(style={'marginBottom': '20px'},
                          children=[
                     html.Strong('Description:', style={'fontWeight': 'bold'}),
@@ -70,6 +77,7 @@ def layout(id=None):
             ]),
         ]),
 
+    # create buttons Cancel Delete and Save
     html.Div(style={'display': 'flex', 'justifyContent': 'space-between', 'marginTop': '20px'}, children=[
         html.A(
             html.Button('Cancel', id='cancel-button', n_clicks=0, className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'}),
@@ -81,7 +89,8 @@ def layout(id=None):
         html.A(
             html.Button('Save Changes', id='save-button-edit-location', n_clicks=0, className='btn btn-secondary', style={'padding': '10px 20px','margin': '10px'})),
     ]),
-    html.Div(id='output-container-location', style={'marginTop': '20px'}),
+    # display output content
+    html.Div(id='output-container-location'),
     dcc.Location(id='url-edit-location'),
 
     ]),

@@ -14,6 +14,7 @@ dash.register_page(__name__, path_template='/edit-animal/<id>')
 global animal_id
 global animal_data
 
+# set the layout for edit animal
 def layout(id=None):
     global animal_id
     global animal_data
@@ -24,6 +25,7 @@ def layout(id=None):
         genus_data = session.query(genus).filter_by(id=animal_data.genus_id).all()[0]
 
         return html.Div(
+            #set a background picture
             style={'position': 'fixed',
                    'top': '10',
                    'left': '0',
@@ -31,16 +33,20 @@ def layout(id=None):
                    'height': '100vh',
                    'z-index': '-1',
                    'backgroundPosition': 'center',
-                   'backgroundSize': 'cover','backgroundImage': f'url("https://s1.1zoom.me/big0/131/Falcon_Birds_Closeup_falco_tinnunculus_Branches_614759_1280x853.jpg")'
+                   'backgroundSize': 'cover',
+                   'backgroundImage': f'url("https://s1.1zoom.me/big0/131/Falcon_Birds_Closeup_falco_tinnunculus_Branches_614759_1280x853.jpg")'
                    },
+            # create the table to edit animals
+            # create the container
             children=[
                 html.Div(style={'maxWidth': '800px', 'padding': '20px', 'border': '2px solid #ccc',
                                 'borderRadius': '10px', 'background-color': 'rgba(255, 255, 255, 0.9)',
-                                'margin': 'auto','position': 'absolute', 'top': '35%', 'left': '50%','transform': 'translate(-50%, -50%)'},
+                                'margin': 'auto','position': 'absolute', 'top': '40%', 'left': '50%','transform': 'translate(-50%, -50%)'},
                         children=[
             html.Div(id="alert-output-edit-animal"),
             html.H1('Edit Animal'),
 
+            # create a dropdown to edit gender
             html.Div(
                 style={'display': 'flex'},
                 children=[
@@ -58,6 +64,8 @@ def layout(id=None):
                                         placeholder='Select Gender'
                                     ),
                                 ]),
+
+                            # create a input fiel to edit visual features
                             html.Div(
                                 style={'marginBottom': '20px'},
                                 children=[
@@ -70,6 +78,7 @@ def layout(id=None):
                                     ),
                                 ]
                             ),
+                            # create a input field to edit estimated age
                             html.Div(
                                 style={'marginBottom': '20px'},
                                 children=[
@@ -83,6 +92,7 @@ def layout(id=None):
                                     ),
                                 ]
                             ),
+                            # create a input field to edit the estimated weight
                             html.Div(
                                 style={'marginBottom': '20px'},
                                 children=[
@@ -96,6 +106,7 @@ def layout(id=None):
                                     ),
                                 ]
                             ),
+                            # create a input field to edit the estimated size
                             html.Div(
                                 style={'marginBottom': '20px'},
                                 children=[
@@ -109,6 +120,7 @@ def layout(id=None):
                                     ),
                                 ]
                             ),
+                            # create a dropdown to edit the genus
                             html.Div(
                                 style={'marginBottom': '20px'},
                                 children=[
@@ -123,6 +135,7 @@ def layout(id=None):
                         ]),
                 ]),
 
+            # create buttons Cancel Delete and Save
             html.Div(
                 style={'display': 'flex', 'justifyContent': 'space-between', 'margintop': '20px'},
                 children=[
@@ -137,8 +150,7 @@ def layout(id=None):
                     ),
                 ]
             ),
-
-            html.Div(id='output-container-animal', style={'marginTop': '20px'}),
+            html.Div(id='output-container-animal'),
             dcc.Location(id='url-edit-animal'),
         ]
         )
