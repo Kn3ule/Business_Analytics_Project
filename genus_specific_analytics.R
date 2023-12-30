@@ -18,12 +18,10 @@ num_all_animals <- nrow(dataAnimals)
 # Filter data in dataAnimals by genus
 filter_genus <- dataAnimals[dataAnimals$genus_id == idGenus,]
 
-#max_age_value <- max(filter_genus$estimated_age)
-
+# Check if no data is available
 tryCatch({
   max_age_value <- max(filter_genus$estimated_age)
 },error = function(e) {
-  # Hier können Sie den Fehler behandeln oder eine Meldung ausgeben
   cat("No data to calculate maxAge", conditionMessage(e), "\n")
 })
 
@@ -31,11 +29,14 @@ calculate_numberAnimalsGenus <- function() {
   # Count rows in filter_genus
   num_animals <- nrow(filter_genus)
 
-  # Return value rows
   return(num_animals)
 }
+
+# Call function
 numberAnimalsOfGenus <- calculate_numberAnimalsGenus()
 
+# Calculate percentage of specific animal
 percentage_of_animal <- round((numberAnimalsOfGenus / num_all_animals) * 100, 2)
 
+# Safe data in RDS-File
 saveRDS(list(numberAllAninmals = num_all_animals, numberAnimalsGenus = numberAnimalsOfGenus, highestAnimalAge = max_age_value, percent = percentage_of_animal), file = "genus_specific.RDS")

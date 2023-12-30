@@ -1,10 +1,3 @@
-# install just one time
-#options(repos = c(CRAN = "https://packagemanager.rstudio.com/all/latest"))
-#install.packages("RPostgres")
-
-# Update all installed packages
-#update.packages()
-
 library(RPostgres)
 
 # Establish a connection using RPostgres
