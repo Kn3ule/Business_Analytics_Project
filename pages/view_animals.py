@@ -78,9 +78,12 @@ def update_recent_observations(pathname):
                                 html.Td(str(row[col]), style={'padding': '12px', 'text-align': 'center'}) for col in
                                 load_animals().columns
                             ] + [
-                                # Add link to the edit page of each row
-                                html.Td(html.A("Edit animal", href=f"/edit-animal/{row['ID']}",
-                                               style={'padding': '12px', 'text-align': 'center'})),
+                                html.Td(
+                                    html.A(
+                                        html.Img(src="/assets/edit-button.png", style={'height': '20px', 'width': '20px'}),
+                                        href=f"/edit-animal/{row['ID']}"),
+                                    style={'text-align': 'center', 'padding': '12px'}
+                                ),
                             ]) for row in load_animals().to_dict('records')
                 ])
             ],
