@@ -73,8 +73,14 @@ def update_recent_observations(pathname):
                                 load_locations().columns
                             ] + [
                                 # Add link to the edit page of each row
-                                html.Td(html.A("Edit location", href=f"/edit-location/{row['ID']}",
-                                               style={'padding': '12px', 'text-align': 'center'})),
+                                #html.Td(html.A("Edit location", href=f"/edit-location/{row['ID']}",
+                                               #style={'padding': '12px', 'text-align': 'center'})),
+                                html.Td(
+                                    html.A(
+                                        html.Img(src="/assets/edit-button.png", style={'height': '20px', 'width': '20px'}),
+                                        href=f"/edit-location/{row['ID']}"),
+                                    style={'text-align': 'center', 'padding': '12px'}
+                                ),
                             ]) for row in load_locations().to_dict('records')
                 ])
             ],
