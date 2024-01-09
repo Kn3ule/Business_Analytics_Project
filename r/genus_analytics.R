@@ -3,9 +3,9 @@ library(RPostgres)
 # Establish a connection using RPostgres
 con <- dbConnect(
   RPostgres::Postgres(),
-  dbname = "Business_Analytics_Project",
+  dbname = "BA_Project",
   user = "postgres",
-  password = "",
+  password = "Maxstinkt123",
   host = "localhost",
   port = 5432
 )
@@ -71,4 +71,4 @@ standard_deviation_size <- round(sd(filter_genus$estimated_size), digits = 2)
 
 
 # Safe results in RDS-File
-saveRDS(list(numberAninmalsOfGenus = numberAnimalsOfGenus, numberOfAllAnimals = num_all_animals ,averageAgeGenus = averageAgeGenus_result, standardDeviationAge = standard_deviation_age, averageWeightGenus = averageWeightGenus_result, standardDeviationWeight = standard_deviation_weight, averageSizeGenus = averageSizeGenus_result, standardDeviationSize = standard_deviation_size , medianAgeGenus = medianAgeGenus_result), file = "variables.RDS")
+saveRDS(list(numberAninmalsOfGenus = numberAnimalsOfGenus, numberOfAllAnimals = num_all_animals ,averageAgeGenus = averageAgeGenus_result, standardDeviationAge = standard_deviation_age, averageWeightGenus = averageWeightGenus_result, standardDeviationWeight = standard_deviation_weight, averageSizeGenus = averageSizeGenus_result, standardDeviationSize = standard_deviation_size , medianAgeGenus = medianAgeGenus_result), file = "r/variables.RDS")
