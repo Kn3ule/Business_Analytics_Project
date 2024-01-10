@@ -82,6 +82,6 @@ def update_recent_observations(pathname):
                                     style={'text-align': 'center', 'padding': '12px'}
                                 ),
                             ]) for row in load_locations().to_dict('records')
-                ])
+                ], style={'background-color': 'white'})
             ],
         )

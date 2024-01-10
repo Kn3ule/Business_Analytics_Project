@@ -85,6 +85,6 @@ def update_recent_observations(pathname):
                                     style={'text-align': 'center', 'padding': '12px'}
                                 ),
                             ]) for row in load_animals().to_dict('records')
-                ])
+                ], style={'background-color': 'white'})
             ],
         )
