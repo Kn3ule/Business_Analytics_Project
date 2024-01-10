@@ -37,9 +37,9 @@ def load_analysis():
             # Assign variable to R session
             r.assign('idGenus', genus_id)
             # Run R script
-            robjects.r.source('genus_analytics.R')
+            robjects.r.source('r/genus_analytics.R')
             # Read RDS file containing values from the R script
-            r_variables = robjects.r['readRDS']("variables.RDS")
+            r_variables = robjects.r['readRDS']("r/variables.RDS")
 
             # Safe values of RDS-file to variables
             # Try except to assign 0 to empty values

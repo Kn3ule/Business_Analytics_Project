@@ -19,9 +19,9 @@ def load_genus_specific_analysis(genus_id):
         # Assign variable to R session
         r.assign('idGenus', genus_id)
         # Run R script
-        robjects.r.source('genus_specific_analytics.R')
+        robjects.r.source('r/genus_specific_analytics.R')
         # Read RDS file containing values from the R script
-        r_variables = robjects.r['readRDS']("genus_specific.RDS")
+        r_variables = robjects.r['readRDS']("r/genus_specific.RDS")
 
         # Safe values of RDS file to variables
         total_animals = r_variables[0]

@@ -3,13 +3,12 @@ library(RPostgres)
 # Establish a connection using RPostgres
 con <- dbConnect(
   RPostgres::Postgres(),
-  dbname = "Business_Analytics_Project",
+  dbname = "BA_Project",
   user = "postgres",
-  password = "",
+  password = "Maxstinkt123",
   host = "localhost",
   port = 5432
 )
-
 # Query statement in the database
 sql_query <- "SELECT * FROM animals"
 dataAnimals <- dbGetQuery(con, sql_query)
@@ -39,4 +38,4 @@ numberAnimalsOfGenus <- calculate_numberAnimalsGenus()
 percentage_of_animal <- round((numberAnimalsOfGenus / num_all_animals) * 100, 2)
 
 # Safe data in RDS-File
-saveRDS(list(numberAllAninmals = num_all_animals, numberAnimalsGenus = numberAnimalsOfGenus, highestAnimalAge = max_age_value, percent = percentage_of_animal), file = "genus_specific.RDS")
+saveRDS(list(numberAllAninmals = num_all_animals, numberAnimalsGenus = numberAnimalsOfGenus, highestAnimalAge = max_age_value, percent = percentage_of_animal), file = "r/genus_specific.RDS")
