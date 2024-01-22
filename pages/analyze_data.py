@@ -1,3 +1,5 @@
+import math
+
 import dash
 import pandas as pd
 from dash import html, dcc, callback
@@ -44,49 +46,49 @@ def load_analysis():
             # Safe values of RDS-file to variables
             # Try except to assign 0 to empty values
             for value in r_variables[0]:
-                number_animals_genus.append(int(value))
+                number_animals_genus.append(float(value))
             genus_names.append(genus_value.species_name)
 
             for value in r_variables[2]:
                 try:
-                    genus_average_age.append(int(value))
+                    genus_average_age.append(float(value))
                 except:
                     genus_average_age.append(0)
 
             for value in r_variables[4]:
                 try:
-                    genus_average_weight.append(int(value))
+                    genus_average_weight.append(float(value))
                 except:
                     genus_average_weight.append(0)
 
             for value in r_variables[6]:
                 try:
-                    genus_average_size.append(int(value))
+                    genus_average_size.append(float(value))
                 except:
                     genus_average_size.append(0)
 
             for value in r_variables[3]:
                 try:
-                    genus_deviation_age.append(int(value))
+                    genus_deviation_age.append(float(value))
                 except:
                     genus_deviation_age.append(0)
 
             for value in r_variables[5]:
                 try:
-                    genus_deviation_weight.append(int(value))
+                    genus_deviation_weight.append(float(value))
                 except:
                     genus_deviation_weight.append(0)
 
             for value in r_variables[7]:
                 try:
-                    genus_deviation_size.append(int(value))
+                    genus_deviation_size.append(float(value))
                 except:
                     genus_deviation_size.append(0)
 
             for value in r_variables[8]:
                 try:
                     if str(value) != "NA_integer_":
-                        genus_median_age.append(int(value))
+                        genus_median_age.append(float(value))
                     else:
                         genus_median_age.append(0)
                 except:
@@ -94,7 +96,7 @@ def load_analysis():
 
             for value in r_variables[1]:
                 try:
-                    total_animals.append(int(value))
+                    total_animals.append(float(value))
                 except:
                     total_animals.append(0)
 
@@ -252,7 +254,8 @@ def update_analysis_all(pathname):
 
             # Add deviation line to every single bar of chart
             for i, (y_value, genus_name) in enumerate(zip(lines_data, genus_names)):
-                if y_value != 0:
+
+                if math.isnan(y_value) is False:
                     if not legend_added:
                         fig.add_shape(
                             type='line',

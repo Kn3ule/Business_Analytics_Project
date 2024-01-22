@@ -95,7 +95,7 @@ def layout(id=None):
                                              html.Div(
                                                  style={'marginBottom': '20px'},
                                                  children=[
-                                                     html.Strong('Estimated Weight:', style={'fontWeight': 'bold'}),
+                                                     html.Strong('Estimated Weight (kg):', style={'fontWeight': 'bold'}),
                                                      # Input field for estimated weight
                                                      dcc.Input(
                                                          value=animal_data.estimated_weight,
@@ -109,7 +109,7 @@ def layout(id=None):
                                              html.Div(
                                                  style={'marginBottom': '20px'},
                                                  children=[
-                                                     html.Strong('Estimated Size:', style={'fontWeight': 'bold'}),
+                                                     html.Strong('Estimated Size (cm):', style={'fontWeight': 'bold'}),
                                                      # Input field for estimated size
                                                      dcc.Input(
                                                          value=animal_data.estimated_size,

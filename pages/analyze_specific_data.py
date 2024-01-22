@@ -179,22 +179,3 @@ def build_groups(zahl):
     groups.append((last_edge, int((last_edge + (round_number / 5)) - 1)))
 
     return groups
-
-
-'''
-def gruppiere_zahlen(max_age):
-    #if zahl == 0:
-        #zahl = 1
-
-    span = math.ceil(max_age / 5)
-    # Erstellen der Altersgruppen mit exklusiver Obergrenze
-    age_groups = [(i, min(i + span, max_age)) for i in range(0, max_age, span)]
-    print(age_groups)
-
-    # Anpassen der Gruppen, um Überschneidungen zu vermeiden
-    # Die untere Grenze jeder Gruppe (außer der ersten) wird um 1 erhöht
-    adjusted_age_groups = [age_groups[0]] + [(age_groups[i][0] + 1, age_groups[i][1]) for i in range(1, 5)]
-
-
-    return adjusted_age_groups
-'''

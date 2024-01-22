@@ -16,8 +16,8 @@ def load_animals():
             animals.gender AS "Gender",
             animals.visual_features AS "Visual Features",
             animals.estimated_age AS "Estimated Age",
-            animals.estimated_weight AS "Estimated Weight",
-            animals.estimated_size AS "Estimated Size"
+            animals.estimated_weight AS "Estimated Weight (kg)",
+            animals.estimated_size AS "Estimated Size (cm)"
             FROM
                 animals
             JOIN
@@ -85,6 +85,6 @@ def update_recent_observations(pathname):
                                     style={'text-align': 'center', 'padding': '12px'}
                                 ),
                             ]) for row in load_animals().to_dict('records')
-                ])
+                ], style={'background-color': 'white'})
             ],
         )
