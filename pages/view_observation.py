@@ -93,7 +93,7 @@ def layout(observation_id=None):
                                      ]),
                                      html.Div(style={'marginBottom': '20px'}, children=[
                                          # Show estimated age of observed animal
-                                         html.Strong('Estimated Age (year):', style={'fontWeight': 'bold'}),
+                                         html.Strong('Estimated Age:', style={'fontWeight': 'bold'}),
                                          html.Span(animal_data.estimated_age, style={'marginLeft': '10px'})
                                      ]),
                                      html.Div(style={'marginBottom': '20px'}, children=[
