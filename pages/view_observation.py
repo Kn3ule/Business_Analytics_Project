@@ -93,17 +93,17 @@ def layout(observation_id=None):
                                      ]),
                                      html.Div(style={'marginBottom': '20px'}, children=[
                                          # Show estimated age of observed animal
-                                         html.Strong('Estimated Age:', style={'fontWeight': 'bold'}),
+                                         html.Strong('Estimated Age (year):', style={'fontWeight': 'bold'}),
                                          html.Span(animal_data.estimated_age, style={'marginLeft': '10px'})
                                      ]),
                                      html.Div(style={'marginBottom': '20px'}, children=[
                                          # Show estimated weight of observed animal
-                                         html.Strong('Estimated Weight:', style={'fontWeight': 'bold'}),
+                                         html.Strong('Estimated Weight (kg):', style={'fontWeight': 'bold'}),
                                          html.Span(animal_data.estimated_weight, style={'marginLeft': '10px'})
                                      ]),
                                      html.Div(style={'marginBottom': '20px'}, children=[
                                          # Show estimated size of observed animal
-                                         html.Strong('Estimated Size:', style={'fontWeight': 'bold'}),
+                                         html.Strong('Estimated Size (cm):', style={'fontWeight': 'bold'}),
                                          html.Span(animal_data.estimated_size, style={'marginLeft': '10px'})
                                      ]),
                                      html.Div(style={'marginBottom': '20px'}, children=[
