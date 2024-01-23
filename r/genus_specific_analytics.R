@@ -5,7 +5,7 @@ con <- dbConnect(
   RPostgres::Postgres(),
   dbname = "BA_Project",
   user = "postgres",
-  password = "Maxstinkt123",
+  password = "password",
   host = "localhost",
   port = 5432
 )
