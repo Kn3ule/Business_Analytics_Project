@@ -46,9 +46,4 @@ Our Wildlife Tracker Application is an innovative tool designed to facilitate th
    ```bash
    python app.py
    ```
-2. **Navigate to the Web Interface:** Open your browser and go to `http://localhost:8050` (or the configured port).
-
-## Dashboard Features
-- **Data Import/Export:** Easily import and export wildlife data.
-- **Real-Time Analytics:** View real-time data analytics with R integration.
-- **Customizable Views:** Tailor the dashboard to highlight specific data points.
+2. **Navigate to the Web Interface:** Open your browser and go to `http://localhost:8050` (or the configured port). 
