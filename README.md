@@ -40,6 +40,25 @@ Our Wildlife Tracker Application is an innovative tool designed to facilitate th
      ```R
      install.packages("RPostgres")
      ```
+3. **Connect the service to Postgres Database**
+   - Create .env File with following information for python db-connection:
+     ```bash
+     POSTGRES_URL="postgres://{user}:{password}@{hostname}:{port}/{database-name}"
+     ```
+   - Insert db-connection information in genus_analytics.R and genus_specific_analytics.R:
+     ```R
+     # Establish a connection using RPostgres
+      con <- dbConnect(
+        RPostgres::Postgres(),
+        dbname = "BA_Project",
+        user = "postgres",
+        password = "Maxstinkt123",
+        host = "localhost",
+        port = 5432
+      )
+     ```
+   - Insert the database model to your postgres:
+     - start the models.py
 
 ## Usage
 1. **Start the Application:**
