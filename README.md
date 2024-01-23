@@ -50,9 +50,9 @@ Our Wildlife Tracker Application is an innovative tool designed to facilitate th
      # Establish a connection using RPostgres
       con <- dbConnect(
         RPostgres::Postgres(),
-        dbname = "BA_Project",
+        dbname = "dbname",
         user = "postgres",
-        password = "Maxstinkt123",
+        password = "password",
         host = "localhost",
         port = 5432
       )
